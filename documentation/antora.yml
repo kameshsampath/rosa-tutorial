@@ -1,0 +1,7 @@
+name: rosa-tutorial
+title: ROSA Tutorial
+version: master
+nav:
+  - modules/ROOT/nav.adoc
+
+start_page: ROOT:index.adoc

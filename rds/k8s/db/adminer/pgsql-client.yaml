@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgsql-client
+  labels:
+    app: pgsql-client
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: pgsql-client
+      labels:
+        app: pgsql-client
+    spec:
+      containers:
+        - name: pgsql-client
+          image: quay.io/rhdevelopers/openshift-pgsql12-client
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - secretRef:
+                name: aws_rds_credentials
+          command:
+            - tail
+            - -f
+            - /dev/null
+      restartPolicy: Never
+  selector:
+    matchLabels:
+      app: pgsql-client

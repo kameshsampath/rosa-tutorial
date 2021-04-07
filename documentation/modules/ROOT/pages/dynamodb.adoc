@@ -1,0 +1,122 @@
+= AWS DynomoDB
+
+A simple REST API that uses https://aws.amazon.com/dynamodb/[AWS DynomoDB] as its data store.
+
+At end of this chapter you will be able to:
+
+* Setup a AWS DynamoDB Table
+* Use the `ROSADemosRole` with OpenShift SA
+* Deploy the `FruitsApp` Java Application
+* Check and verify only authorized OpenShift SA is able peform CRUD on DynamoDB
+
+[#aws-dd-pre-req]
+== Pre-Requisites
+
+Ensure that you have completed the following before running the exercises of this chapter:
+
+* xref:setup.adoc#setup-rosa[ROSA Cluster Setup]
+* All steps in xref:aws-iam.adoc#prep-aws-iam[AWS IAM] is completed 
+
+[#setup-dd]
+== Setup DynamoDB
+
+[#rds-nav-folder]
+Navigate to the tutorial folder:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+cd $TUTORIAL_HOME/dynamodb
+----
+
+Ensure you are on the right OpenShift project `rosa-demos`:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc project -q
+----
+
+[#connect-dd]
+== Connect to DynamoDB
+
+*TODO*
+
+[#setup-build-service-ui]
+include::ROOT:partial$apps.adoc[tags="ui"]
+
+[#dd-build-prereq]
+=== Pre-Requisite
+
+Lets ensure if all the required environment variables are setup correctly
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+export AWS_REGION='<your aws_region value>'#<.>
+----
+<.> The AWS region to use
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+export ROSA_DEMO_ROLE_ARN=$(aws iam get-role --role-name --output json ROSADemosRole | jq -r '.Role.Arn')#<.>
+----
+<.> The AWS Role ARN for the `ROSADemosRole` IAM role
+
+[#dd-build-quarkus-service]
+=== Quarkus
+
+include::ROOT:partial$commands.adoc[tags="quarkus"]
+
+[#dd-build-sb-service]
+=== Spring Boot
+
+include::ROOT:partial$commands.adoc[tags="springboot"]
+
+[#aws-dd-check-apps]
+=== Check Application Deployments
+
+Once the maven build completes successfully you can check the status of the application deployment:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc get deploy -n rosa-demos
+----
+
+Based on which variant of Application you deployed *Quarkus* or *SpringBoot* you should see an output as shown below. Assuming the *Quarkus* variant deployed:
+
+[.console-output]
+[source,bash,subs="quotes"]
+----
+NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+db-adminer                1/1     1            1           19h
+pgsql-client              1/1     1            1           14h
+#rosa-fruits-app-quarkus   1/1     1            1           4h48m#
+----
+
+[NOTE]
+====
+You can also verify the same via ROSA OpenShift Web Console by navigating to `rosa-demos` project
+====
+
+[#aws-rds-verify-apps]
+== Check Application Deployments
+
+include::ROOT:partial$verify_app.adoc[]
+
+[#aws-rds-verify-access]
+== Verify Access
+
+To make sure the IAM works, try deploying the application a different namespace, for e.g. `demos`
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc new-project demos
+----
+
+Now do the <<rds-build-quarkus-service,Quarkus>> or <<rds-build-sb-service,SpringBoot>> deployment on the `demos` namespace.
+
+Now when you try any of the API methods above, you should get HTTP 403 as the IAM policy controls the Service Account (`rosa-demo-sa`) and its namespace.

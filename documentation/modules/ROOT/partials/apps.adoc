@@ -1,0 +1,16 @@
+#tag::ui[]
+== Build Service UI
+
+All the demos use demonstrates the integration with simple Fruits REST API,to play with API the demos provides https://reactjs.org[ReactJS UI]. 
+
+The following section details how build UI to make it avaible for the other demo applications to use it as part of respective packaging.
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+./mvnw -N install#<.>
+./mvnw -Pbuild-ui clean install#<.>
+----
+<.> Install the projects to the local maven repo
+<.> Install the UI to the local maven repo, it will be used by the Quarkus and SpringBoot project packaging
+#end::ui[]

@@ -1,0 +1,10 @@
+---
+services:
+  postgresql:
+    image: docker.io/postgres:12.6-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: pa55Word!
+      POSTGRES_USER: demo
+      POSTGRES_DB: fruitsdb

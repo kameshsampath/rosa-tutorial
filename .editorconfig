@@ -1,0 +1,12 @@
+root = true
+
+#[*]
+#insert_final_newline = true
+
+[*.{js,java,yaml,yml,json,xml}]
+indent_style = space
+indent_size = 2
+
+# Tab indentation (no size specified)
+[Makefile]
+indent_style = tab

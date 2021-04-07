@@ -1,0 +1,25 @@
+= Welcome to ROSA Tutorial
+:page-layout: home
+:!sectids:
+
+[.text-center.strong]
+== How to integrate AWS Native services with ROSA
+
+A collection of Java https://quarkus.io[Quarkus] and https://springboot.io[Spring Boot] applications is intended to demonstrate how to integrate the AWS Native Services from an OpenShift cluster deployed via   https://www.openshift.com/products/amazon-openshift[ROSA].
+
+Available integration Demos
+
+[x] https://aws.amazon.com/dynamodb/[AWS DynamoDB]
+[x] https://aws.amazon.com/rds/[AWS RDS]
+
+[.tiles.browse]
+== Browse modules
+
+[.tile]
+.xref:setup.adoc[Get Started]
+* xref:setup.adoc#rosa[Setup ROSA Cluster]
+
+[.tile]
+.xref:rds.adoc[AWS RDS]
+* xref:rds.adoc#quarkus[Package and deploy a Quarkus Application]
+* xref:rds.adoc#springboot[Package and deploy a SpringBoot Application]

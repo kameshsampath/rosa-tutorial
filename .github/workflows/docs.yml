@@ -1,0 +1,32 @@
+name: ROSA Demos
+
+on:
+  push:
+    branches:
+      - master
+#    paths:
+#      - '**'
+#      - '!.github/workflows/**'
+#      - '.github/workflows/main.yml'
+#      - '.github/workflows/site.yml'
+env:
+  SITE_DIR: "gh-pages"
+jobs:
+  buildAnDeploySite:
+    name: "Build site with Antora"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: "Generate site using Antora site action"
+        uses: kameshsampath/antora-site-action@v0.2.4
+        with:
+          antora_playbook: site.yml
+      - name: Deploy Site
+        id: deploy_site
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: "${{ env.SITE_DIR }}"
+          publish_branch: "gh-pages"
+          full_commit_message: "[CI]${{ github.event.head_commit.message }}"

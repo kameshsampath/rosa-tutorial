@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>dev.kameshs</groupId>
+    <artifactId>rosa-demos-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>rosa-demos-rds-parent</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>Parent::AWS RDS::ROSA Demos</name>
+  <packaging>pom</packaging>
+  <description>Demo Projects to show ROSA integration with AWS RDS
+  </description>
+
+  <modules>
+    <module>springboot</module>
+    <module>quarkus</module>
+  </modules>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-sts -->
+      <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-rds</artifactId>
+        <version>1.11.971</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.amazonaws</groupId>
+        <artifactId>aws-java-sdk-sts</artifactId>
+        <version>1.11.992</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+</project>

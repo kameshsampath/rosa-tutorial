@@ -1,0 +1,278 @@
+= ROSA Fruits Application(RDS)
+:experimental:
+
+A simple REST API that uses https://aws.amazon.com/rds/[AWS RDS] as its data store. The application is intended to demonstrate how to integrate the AWS Native Services from an OpenShift cluster deployed via   https://aws.amazon.com/rosa/[ROSA].
+
+== Pre-Requisites
+
+- AWS Account with permissions to:
+ * Create IAM Role
+ * Create IAM Policy
+ * Create OIDC Provider
+
+- https://aws.amazon.com/cli/[AWS CLI]
+
+- https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.7/[OpenShift Client(oc)]
+
+- https://git-scm.com/[Git]
+
+- https://httpie.io/[HTTPie]
+
+- https://stedolan.github.io/jq/manual/[jq]
+
+- Java 11
+
+== Download Project Sources
+
+[source,bash]
+----
+git clone https://github.com/kameshsampath/rosa-fruits-app
+export DEMO_HOME="$PWD"
+export AWS_REGION="us-west-2"
+----
+
+== ROSA Cluster Setup
+
+[source,bash]
+----
+rosa create cluster --cluster-name="my-rosa-cluster"
+----
+
+The command above will create the ROSA cluster in your default AWS region, type `rosa --help` for more information.
+
+== AWS Preparation
+
+=== RDS Postgresql
+
+Connect to the AWS RDS service and run the following commands to create the DB:
+
+[source,bash]
+----
+aws rds create-db-instance \
+    --db-instance-identifier rosa-demos-kameshs \
+    --db-instance-class db.t2.micro \
+    --engine MySQL \
+    --allocated-storage 20 \
+    --master-username masterawsuser \
+    --master-user-password masteruserpassword \
+    --enable-iam-database-authentication
+----
+
+=== IAM
+As prerequisite for this demo, it's required to setup few AWS resources,
+
+- IAM Policy `ROSADemosPolicy` which will restrict the OpenShift SA to allow only DynamoDB Operations
+- IAM Role `ROSADemosRole` that will attached to the OpenShift SA
+- IAM OpenId Connect Provider that will be used by OpenShift to authenticate the SA token
+
+The `$DEMO_HOME/setup/hack.sh` will set all the aforementioned resources using https://www.ansible.com/[Ansible], for the Ansible to setup the resources, you need to
+
+Setup `KUBECONFIG` variable, this variable will be used in the Ansible Container to connect to the OpenShift Cluster.
+
+[source,bash]
+----
+mkdir -p "$DEMO_HOME/.kube/config"
+export KUBECONFIG="$DEMO_HOME/.kube/config"
+----
+
+Now Login into the OpenShift ROSA cluster as a user with ClusterAdmin privileges:
+
+[source,bash]
+----
+oc login --token=<token> --server<your api server>
+----
+
+To create the AWS resources, its required to provide AWS credentials to Ansible:
+
+- Copy `$DEMO_HOME/setup/env/passwords.example` to `$DEMO_HOME/setup/env/passwords`
+
+- Update the `$DEMO_HOME/setup/env/passwords` with your AWS Access and Secret Keys.
+
+[NOTE]
+====
+The `setup/.kube` and `setup/env/passwords` file are excluded by Git
+====
+
+[IMPORTANT]
+====
+The parameters used for the Ansible playbook are set in link:setup/env/extravars[$DEMO_HOME/setup/env/extravars] file. For detailed description of the parameters, default value and its description check https://github.com/kameshsampath/ansible-role-rosa-demos#role-variables[Ansible Role ROSA Demos]
+====
+
+[source,bash]
+----
+$DEMO_HOME/setup/hack.sh
+----
+
+Set environment variable `$ROSA_DEMO_ROLE_ARN`
+
+[source]
+----
+export ROSA_DEMO_ROLE_ARN=$(aws iam get-role --role-name ROSADemosRole | jq -r '.Role.Arn')
+----
+
+== Packaging and Deploying to OpenShift
+
+The application uses https://www.eclipse.org/jkube/[Eclipse JKube] maven plugin to build and deploy the Java Application to OpenShift.
+
+Create the OpenShift project
+
+[source,bash]
+----
+oc new-project rosa-demos
+----
+
+Build and Deploy the application
+
+[source,bash]
+----
+./mvnw -Popenshift -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
+  -Daws.region=$AWS_REGION clean package
+----
+
+== Testing Application
+
+The AWS IAM role allows accessing the application only from `rosa-demos` workspace and as `rosa-demo-sa`,
+
+Get the Route:
+
+[source,bash]
+----
+export APP_URL="http://$(oc get route rosa-fruits-app -n rosa-demos -ojsonpath='{.spec.host}')"
+----
+
+=== Application UI
+
+Open the `$APP_URL` in your browser. The UI will allow you to list, add and delete fruits.
+
+[NOTE]: The List will display an error if you are not authorized to access the APP :)
+
+=== Using Swagger UI
+You can access the Swagger UI from "http://$APP_URL/swagger-ui" and perform the REST operations.
+
+The following REST URI end points are available:
+
+[NOTE,caption=GET Methods]
+====
+* Lists all fruit
+
+e.g.
+
+[source,bash]
+----
+http $APP_URL/api/fruit/apple
+----
+
+* $APP_URL/api/fruit/{name} - Get a fruit by its `name`
+
+e.g.
+
+[source,bash]
+----
+http $APP_URL/api/fruit/apple
+----
+
+====
+
+[NOTE,caption=POST Methods]
+====
+
+* Adds a fruit, takes a JSON payload
+
+[source,json]
+----
+{
+  "name": "apple",
+  "season": "fall"
+}
+----
+
+e.g.
+
+[source,bash]
+----
+http POST $APP_URL/api/fruit name=apple season=fall
+----
+
+====
+
+[NOTE,caption=DELETE Methods]
+====
+* Delete a fruit by its `name`
+
+e.g.
+
+[source,bash]
+----
+http DELETE $APP_URL/api/fruit/apple
+----
+====
+
+== Verify IAM
+
+To make sure the IAM works, try deploying the application a different namespace, for e.g. `demos`
+
+[source,bash]
+----
+oc new-project demos
+./mvnw -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
+  -Daws.region=$AWS_REGION clean package
+----
+
+Now when you try any of the API methods above, you should get HTTP 403 as the IAM policy controls the Service Account (`rosa-demo-sa`) and its namespace.
+
+== Development
+
+Start the local DynamoDB server
+
+[source,bash]
+----
+docker compose up -d $DEMO_HOME/docker-compose.yml
+----
+
+Access the local DynamoDB server using http://localhost:8000/shell, and run the following command to create the table:
+
+[source,bash]
+----
+var params = {
+    TableName: 'QuarkusFruits',
+    KeySchema: [{ AttributeName: 'fruitName', KeyType: 'HASH' }],
+    AttributeDefinitions: [{  AttributeName: 'fruitName', AttributeType: 'S', }],
+    ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1, }
+};
+
+dynamodb.createTable(params, function(err, data) {
+    if (err) ppJson(err);
+    else ppJson(data);
+
+});
+----
+
+Now start Quarkus Application in dev mode 
+
+[source,bash]
+----
+./mvnw clean compile -Daws.region='us-west-2' quarkus:dev
+----
+
+The UI source code is located in `$DEMO_HOME/src/main/frontend`, which is a https://reactjs.org[React] app.
+
+== Cleanup
+
+To clean the deployments and related resources run:
+
+[source,bash]
+----
+./mvnw -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
+  -Daws.region=$AWS_REGION oc:undeploy
+----
+
+To clean the AWS Resources, update the *rollback* variable in "$DEMO_HOME/setup/project/playbook.yml" to be `True` and then run:
+
+[source,bash]
+----
+$DEMO_HOME/setup/hack.sh
+----
+
+== Powered by
+
+This project uses Quarkus, the Supersonic Subatomic Java Framework. If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .

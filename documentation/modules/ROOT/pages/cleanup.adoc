@@ -1,0 +1,46 @@
+= Cleanup
+
+[#cleanup-openshift]
+== OpenShift Resources
+
+Navigate to the tutorial folder:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+cd $TUTORIAL_HOME
+----
+
+To clean the deployments and related resources run:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+./mvnw -n rosa-demos -Popenshift oc:undeploy
+----
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+./mvnw -n demos -Popenshift oc:undeploy
+----
+
+Delete the OpenShift projects:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+oc project demos
+oc project rosa-demos
+----
+
+[#cleanup-aws]
+== AWS Resources
+
+Edit the file link:{github-repo}/{setup-env-repo}/{env-extravars-file}[$TUTORIAL_HOME/setup/env/extravars^] and update *rollback* to `True`
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+$TUTORIAL_HOME/setup/hack.sh
+----

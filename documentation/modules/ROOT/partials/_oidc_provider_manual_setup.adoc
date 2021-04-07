@@ -1,0 +1,209 @@
+= OIDC Provider Setup
+
+The current Red Hat OpenShift on AWS(ROSA) does not have a OIDC discovery endpoint, hence we need to have one setup to complete the working of this demo.
+
+[#oidc-env-variables]
+== Environment Variables
+
+[source,bash]
+----
+export AWS_ACCOUNT=$(aws sts get-caller-identity | jq -r ".Account")
+export OIDC_BUCKET_NAME="rosa-demos-oidc"
+export AWS_REGION="us-west-2"
+export PKCS_KEY="sa-signer.pub"
+export OIDC_ISSUER_URL="https://s3.$AWS_REGION.amazonaws.com/$OIDC_BUCKET_NAME"
+----
+
+[NOTE]: The values above are used for demo purpose, please modify them as needed
+
+=== Setup OIDC Provider Assets
+
+Create a work directory:
+
+[source,bash]
+----
+mkdir -p $DEMO_HOME/work
+cd $DEMO_HOME/work
+----
+
+Extract the OpenShift SA Signer public key and store it in the file $PKCS_KEY:
+
+[source,bash]
+----
+oc get -n openshift-kube-apiserver cm -o json bound-sa-token-signing-certs \
+  | jq -r '.data["service-account-001.pub"]' - > $PKCS_KEY
+----
+
+Using the utility provided as part of this demo sources, generate the `keys.json`:
+
+[source,bash]
+----
+$DEMO_HOME/bin/self-hosted-<darwin|linux> -key $PKCS_KEY \
+  | jq '.keys += [.keys[0]] | .keys[1].kid = ""' > "keys.json"
+----
+
+Create openid-configuration, copy the template file from $DEMO_HOME/aws:
+
+[source,bash]
+----
+envsubst < $DEMO_HOME/.aws/openid-configuration > $DEMO_HOME/work/openid-configuration
+----
+
+Based on the <<oidc-env-variables,environment variables>> set earlier, the openid-configuration should be as shown:
+
+[source,json]
+----
+{
+    "issuer": "https://s3.us-west-2.amazonaws.com/rosa-demos-oidc",
+    "jwks_uri": "https://s3.us-west-2.amazonaws.com/rosa-demos-oidc/keys.json",
+    "authorization_endpoint": "urn:kubernetes:programmatic_authorization",
+    "response_types_supported": [
+        "id_token"
+    ],
+    "subject_types_supported": [
+        "public"
+    ],
+    "id_token_signing_alg_values_supported": [
+        "RS256"
+    ],
+    "claims_supported": [
+        "aud",
+        "exp",
+        "sub",
+        "iat",
+        "iss",
+        "sub"
+    ]
+}
+----
+
+==== Create AWS s3 bucket
+
+The AWS s3 bucket will hold the assets required for setting the OIDC Provider,
+
+[source,bash]
+----
+aws s3api create-bucket --bucket $OIDC_BUCKET_NAME --region $AWS_REGION \
+  --create-bucket-configuration LocationConstraint=$AWS_REGION
+----
+
+Add the `keys.json` and `openid-configuration` to the bucket,
+
+[source,bash]
+----
+aws s3api put-object --bucket $OIDC_BUCKET_NAME --key keys.json --body ./keys.json
+aws s3api put-object --bucket $OIDC_BUCKET_NAME --key '.well-known/openid-configuration' --body ./openid-configuration
+----
+
+Make the assets to be public readable,
+
+[source,bash]
+----
+aws s3api put-object-acl --bucket $OIDC_BUCKET_NAME --key keys.json --acl public-read
+aws s3api put-object-acl --bucket $OIDC_BUCKET_NAME --key '.well-known/openid-configuration' --acl public-read
+----
+
+Verify by accessing it,
+
+[source,bash]
+----
+curl https://s3.$AWS_REGION.amazonaws.com/$OIDC_BUCKET_NAME/keys.json
+curl https://s3.$AWS_REGION.amazonaws.com/$OIDC_BUCKET_NAME/.well-known/openid-configuration
+----
+
+=== Create OIDC Provider
+
+Create the OIDC provider that uses the S3 bucket as Provider URL:
+
+[source,bash]
+----
+echo | openssl s_client -servername $OIDC_BUCKET_NAME.s3.$AWS_REGION.amazonaws.com -connect $OIDC_BUCKET_NAME.s3.$AWS_REGION.amazonaws.com:443 -showcerts 2>/dev/null | awk '/BEGIN/,/END/{ if(/BEGIN/){a++}; out="cert"a".pem"; print >out}'
+
+export ROOT_CA_FILE=$(ls -1v cert* | awk 'END{print $1}')
+
+export ROOT_CA_FINGERPRINT=$(openssl x509 -in $ROOT_CA_FILE -fingerprint -noout | sed -e 's/.*Fingerprint=//' -e 's/://g')
+
+aws iam create-open-id-connect-provider \
+  --url $OIDC_ISSUER_URL \
+  --thumbprint-list $ROOT_CA_FINGERPRINT \
+  --client-id-list sts.amazonaws.com
+----
+
+=== Create IAM Policy
+
+Create an IAM Policy that allows Read, Write, Query and Scan access to the DynamoDB table called `QuarkusFruits`:
+
+[source,bash]
+----
+export ROSA_DEMO_POLICY_NAME="ROSADemosPolicy"
+
+cp $DEMO_HOME/.aws/policy.json .
+
+aws iam create-policy --policy-name $ROSA_DEMO_POLICY_NAME --policy-document file://policy.json
+----
+
+Set the Policy ARN Environment variable
+
+[source,bash]
+----
+export ROSA_DEMO_POLICY_ARN="arn:aws:iam::$AWS_ACCOUNT:policy/$OIDC_ISSUER_PATH"
+----
+
+=== Create IAM Role
+
+Let us create the IAM role and attach the policy to it.
+
+[source,bash]
+----
+export ROSA_DEMO_ROLE_NAME="ROSADemosRole"
+export OIDC_ISSUER_PATH=$(echo OIDC_ISSUER_URL | cut -f 3- -d'/')
+export OIDC_PROVIDER_ARN="arn:aws:iam::$AWS_ACCOUNT:oidc-provider/$OIDC_ISSUER_PATH"
+
+envsubst < $DEMO_HOME/.aws/trust-relationships.json  > trust-relationships.json
+----
+
+Create the role that trusts the OIDC Provider:
+
+[source,bash]
+----
+aws iam create-role \
+          --role-name $ROSA_DEMO_ROLE_NAME
+          --assume-role-policy-document file://trust-relationships.json
+----
+
+Make the Role to trust the Identity Provider:
+
+[source,bash]
+----
+aws iam update-assume-role-policy \
+          --role-name $ROSA_DEMO_ROLE_NAME \
+          --policy-document file://trust-relationships.json
+----
+
+Attach the ROSA Demo DynamoDB Policy:
+
+[source,bash]
+----
+aws iam attach-role-policy \
+          --role-name $ROSA_DEMO_ROLE_NAME \
+          --policy-arn $ROSA_DEMO_POLICY_ARN
+----
+
+Set the Role ARN Environment variable
+
+[source,bash]
+----
+export ROSA_DEMO_ROLE_ARN="arn:aws:iam::$AWS_ACCOUNT:role/$ROSA_DEMO_ROLE_NAME"
+----
+
+NOTE: We might use the same role ARN when deploying the application.
+
+=== OpenShift Authentication
+
+Make OpenShift to use the OIDC Provider,
+
+[source,bash]
+----
+oc get authentication.config.openshift.io cluster -o json \
+  | jq ".spec.serviceAccountIssuer = \"$OIDC_ISSUER_URL\"" - | oc apply -f -
+----

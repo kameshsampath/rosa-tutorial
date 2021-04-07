@@ -1,0 +1,13 @@
+- name: ROSA Fruits App Demo Setup
+  hosts: localhost
+  connection: local
+
+  vars_prompt:
+    - name: aws_access_key
+      prompt: Enter AWS Access Key
+
+    - name: aws_secret_key
+      prompt: Enter AWS Secret Key
+
+  roles:
+    - kameshsampath.rosa_demos

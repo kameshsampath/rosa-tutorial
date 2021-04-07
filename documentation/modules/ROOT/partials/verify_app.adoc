@@ -1,0 +1,85 @@
+The AWS IAM role allows accessing the application only from `rosa-demos` workspace and as `rosa-demo-sa`,
+
+Get the Route:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+export APP_URL="http://$(oc get route rosa-fruits-app -n rosa-demos -ojsonpath='{.spec.host}')"
+----
+
+[#verify-use-app-ui]
+=== Application UI
+
+Open the `$APP_URL` in your browser. The UI will allow you to list, add and delete fruits.
+
+[NOTE]
+====
+The List will display an error if you are not authorized to access the APP :)
+====
+
+[#verify-use-swagger-ui]
+=== Using Swagger UI
+You can access the Swagger UI from http://$APP_URL/swagger-ui and perform the REST operations.
+
+The following REST URI end points are available:
+
+[NOTE,caption=GET Method]
+====
+* Lists all fruit
+
+e.g.
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+http $APP_URL/api/fruit/apple
+----
+
+* $APP_URL/api/fruit/+{name}+ - Get a fruit by its `name`
+
+e.g.
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+---
+http $APP_URL/api/fruit/apple
+----
+
+====
+
+[NOTE,caption=POST Method]
+====
+
+* Adds a fruit, takes a JSON payload
+
+[source,json]
+----
+{
+"name": "apple",
+"season": "fall"
+}
+----
+
+e.g.
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+---
+http POST $APP_URL/api/fruit name=apple season=fall
+----
+
+====
+
+[NOTE,caption=DELETE Method]
+====
+* Delete a fruit by its `name`
+
+e.g.
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+http DELETE $APP_URL/api/fruit/apple
+----
+====

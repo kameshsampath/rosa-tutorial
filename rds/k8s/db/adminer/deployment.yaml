@@ -1,0 +1,30 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-adminer
+  labels:
+    app.kubernetesio/part-of: DB
+spec:
+  selector:
+    matchLabels:
+      app: db-adminer
+  template:
+    metadata:
+      labels:
+        app: db-adminer
+    spec:
+      containers:
+        - name: db-adminer
+          image: docker.io/adminer
+          env:
+            - name: ADMINER_DESIGN
+              value: nette
+            - name: ADMINER_DEFAULT_SERVER
+              value: PostgreSQL
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 8080

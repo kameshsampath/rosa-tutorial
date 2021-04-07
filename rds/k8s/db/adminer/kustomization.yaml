@@ -1,0 +1,12 @@
+---
+generatorOptions:
+  disableNameSuffixHash: true
+resources:
+  - deployment.yaml
+  - service.yaml
+  - route.yaml
+  - pgsql-client.yaml
+secretGenerator:
+  - name: aws_rds_credentials
+    files:
+      - aws_rds.env
