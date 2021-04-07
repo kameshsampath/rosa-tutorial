@@ -8,7 +8,8 @@ site:
 
 content:
   sources:
-    - url: ./
+    - url: https://github.com/kameshsampath/rosa-tutorial
+      branches: main
       start_path: documentation
 
 asciidoc:

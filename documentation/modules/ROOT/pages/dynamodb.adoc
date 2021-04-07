@@ -1,8 +1,9 @@
-= AWS DynomoDB
+= AWS DynamoDB
+include::_attributes.adoc[]
 
 A simple REST API that uses https://aws.amazon.com/dynamodb/[AWS DynomoDB] as its data store.
 
-At end of this chapter you will be able to:
+At the end of this chapter you will be able to:
 
 * Setup a AWS DynamoDB Table
 * Use the `ROSADemosRole` with OpenShift SA

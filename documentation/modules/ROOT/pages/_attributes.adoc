@@ -1,6 +1,7 @@
 :experimental:
 :source-highlighter: highlightjs
-:github-repo: https://github.com/kameshsampath/rosa-tutorial
-:setup-env-repo: setup/env
+
 :env-password-file: passwords.example
+:setup-env-repo: setup/env
 :env-extravars-file: extravars
+:github-repo: https://github.com/kameshsampath/rosa-tutorial

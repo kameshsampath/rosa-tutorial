@@ -1,4 +1,5 @@
 = Cleanup
+include::_attributes.adoc[]
 
 [#cleanup-openshift]
 == OpenShift Resources

@@ -1,6 +1,5 @@
-= Deploy Service
-include::_attributes.adoc[]
 = AWS RDS
+include::_attributes.adoc[]
 
 A simple REST API that uses https://aws.amazon.com/rds/[AWS RDS] as its data store.
 

@@ -7,10 +7,10 @@ include::_attributes.adoc[]
 At the end of this chapter you will be able to :
 
 * Setup an https://openid.net/connect/[OpenID Connect] Provider with AWS IAM
-* Setup a Role called `ROSADemosRole` which will be associated with OpenShift Service Account and povides the necessary authorizations as per `ROSADemosPolicy`
+* Setup a Role called `ROSADemosRole` which will be associated with OpenShift Service Account and provides the necessary authorizations as per `ROSADemosPolicy`
 * Setup a IAM Policy`ROSADemosPolicy` that allows,
-  ** Perform CRUD opertions on DynamoDB
-  ** Perform CRUD opertions on RDS (Postgres)
+  ** Perform CRUD operations on DynamoDB
+  ** Perform CRUD operations on RDS (Postgres)
 
 [#setup-iam]
 == Setup 
