@@ -3,7 +3,7 @@ name: ROSA Demos
 on:
   push:
     branches:
-      - master
+      - main
 #    paths:
 #      - '**'
 #      - '!.github/workflows/**'
