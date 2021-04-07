@@ -44,7 +44,7 @@ setup/project/**
 !setup/project/playbook.yml
 !setup/project/run.sh
 !setup/project/ansible.cfg
-docker
+!**/src/main/docker/**
 passwords
 **/node_modules
 yarn.lock

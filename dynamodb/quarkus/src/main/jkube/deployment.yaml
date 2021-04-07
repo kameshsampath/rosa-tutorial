@@ -1,0 +1,11 @@
+---
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+      - env:
+         -  name: AWS_REGION
+            value: ${aws.region}
+        imagePullPolicy: Always
+      serviceAccountName: rosa-demo-sa

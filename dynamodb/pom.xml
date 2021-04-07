@@ -16,8 +16,9 @@
   <description>Demo Projects to show ROSA integration with AWS Dynamodb
   </description>
 
-  <modules/>
-
+  <modules>
+    <module>quarkus</module>
+  </modules>
   <dependencyManagement/>
 
 </project>

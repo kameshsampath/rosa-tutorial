@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>rosa-fruits-app-sb</artifactId>
-  <name>ROSA::Fruits App SpringBoot</name>
+  <name>RDS::SpringBoot::Fruits App</name>
   <description>ROSA Fruits App SpringBoot</description>
 
   <properties>

@@ -34,6 +34,7 @@
     <quarkus.platform.version>1.13.0.Final</quarkus.platform.version>
     <skipTests>true</skipTests>
     <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
+    <fruits-ui.version>${project.version}</fruits-ui.version>
   </properties>
   <dependencyManagement>
     <dependencies>

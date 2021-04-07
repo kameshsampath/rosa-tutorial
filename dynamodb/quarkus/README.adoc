@@ -1,19 +1,14 @@
-= ROSA Tutorial
+= ROSA Fruits Application
 :experimental:
 
-A collection of Java https://quarkus.io[Quarkus] and https://springboot.io[Spring Boot] applications is intended to demonstrate how to integrate the AWS Native Services from an OpenShift cluster deployed via   https://aws.amazon.com/rosa/[ROSA].
-
-Available integration Demos
-
-[x] https://aws.amazon.com/dynamodb/[AWS DynomoDB]
-[x] https://aws.amazon.com/rds/[AWS RDS]
+A simple REST API that uses https://aws.amazon.com/dynamodb/[AWS DynomoDB] as its data store. The application is intended to demonstrate how to integrate the AWS Native Services from an OpenShift cluster deployed via   https://aws.amazon.com/rosa/[ROSA].
 
 == Pre-Requisites
 
 - AWS Account with permissions to:
-* Create IAM Role
-* Create IAM Policy
-* Create OIDC Provider
+ * Create IAM Role
+ * Create IAM Policy
+ * Create OIDC Provider
 
 - https://aws.amazon.com/cli/[AWS CLI]
 
@@ -31,7 +26,7 @@ Available integration Demos
 
 [source,bash]
 ----
-git clone https://github.com/kameshsampath/rosa-tutorial
+git clone https://github.com/kameshsampath/rosa-fruits-app
 export DEMO_HOME="$PWD"
 export AWS_REGION="us-west-2"
 ----
@@ -47,13 +42,25 @@ The command above will create the ROSA cluster in your default AWS region, type 
 
 == AWS Preparation
 
-=== RDS Postgresql
-
-TODO
-
 === DynamoDB
 
-TODO
+Connect to the AWS DynamoDB service and run the following commands to create the table:
+
+[source,javascript]
+----
+var params = {
+    TableName: 'QuarkusFruits',
+    KeySchema: [{ AttributeName: 'fruitName', KeyType: 'HASH' }],
+    AttributeDefinitions: [{  AttributeName: 'fruitName', AttributeType: 'S', }],
+    ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1, }
+};
+
+dynamodb.createTable(params, function(err, data) {
+if (err) ppJson(err);
+else ppJson(data);
+
+});
+----
 
 === IAM
 As prerequisite for this demo, it's required to setup few AWS resources,
@@ -95,11 +102,6 @@ The `setup/.kube` and `setup/env/passwords` file are excluded by Git
 The parameters used for the Ansible playbook are set in link:setup/env/extravars[$DEMO_HOME/setup/env/extravars] file. For detailed description of the parameters, default value and its description check https://github.com/kameshsampath/ansible-role-rosa-demos#role-variables[Ansible Role ROSA Demos]
 ====
 
-Edit the file link:setup/env/extravars[$DEMO_HOME/setup/env/extravars] and update the following variables in to your settings:
-
-* aws_region
-* oidc_bucket_name
-
 [source,bash]
 ----
 $DEMO_HOME/setup/hack.sh
@@ -109,23 +111,10 @@ Set environment variable `$ROSA_DEMO_ROLE_ARN`
 
 [source]
 ----
-export ROSA_DEMO_ROLE_ARN=$(aws iam get-role --role-name --output json ROSADemosRole | jq -r '.Role.Arn')
+export ROSA_DEMO_ROLE_ARN=$(aws iam get-role --role-name ROSADemosRole | jq -r '.Role.Arn')
 ----
 
-== Build UI
-
-All the demos use demonstrates the integration with simple Fruits REST API,to play with API the demos provides ReactJS UI. The following section details how build and install it local maven repo, thereby allowing the Quarkus and SpringBoot applications to bundle them
-
-[source,bash]
-----
-cd $DEMO
-# install the projects to the local maven repo
-./mvnw -N install
-# install the UI to the local maven repo
-./mvnw -Pbuild-ui clean install
-----
-
-== Prepare OpenShift
+== Packaging and Deploying to OpenShift
 
 The application uses https://www.eclipse.org/jkube/[Eclipse JKube] maven plugin to build and deploy the Java Application to OpenShift.
 
@@ -141,7 +130,7 @@ Build and Deploy the application
 [source,bash]
 ----
 ./mvnw -Popenshift -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
--Daws.region=$AWS_REGION clean package
+  -Daws.region=$AWS_REGION clean package
 ----
 
 == Testing Application
@@ -196,8 +185,8 @@ http $APP_URL/api/fruit/apple
 [source,json]
 ----
 {
-"name": "apple",
-"season": "fall"
+  "name": "apple",
+  "season": "fall"
 }
 ----
 
@@ -230,7 +219,7 @@ To make sure the IAM works, try deploying the application a different namespace,
 ----
 oc new-project demos
 ./mvnw -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
--Daws.region=$AWS_REGION clean package
+  -Daws.region=$AWS_REGION clean package
 ----
 
 Now when you try any of the API methods above, you should get HTTP 403 as the IAM policy controls the Service Account (`rosa-demo-sa`) and its namespace.
@@ -249,20 +238,20 @@ Access the local DynamoDB server using http://localhost:8000/shell, and run the 
 [source,bash]
 ----
 var params = {
-TableName: 'QuarkusFruits',
-KeySchema: [{ AttributeName: 'fruitName', KeyType: 'HASH' }],
-AttributeDefinitions: [{  AttributeName: 'fruitName', AttributeType: 'S', }],
-ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1, }
+    TableName: 'QuarkusFruits',
+    KeySchema: [{ AttributeName: 'fruitName', KeyType: 'HASH' }],
+    AttributeDefinitions: [{  AttributeName: 'fruitName', AttributeType: 'S', }],
+    ProvisionedThroughput: { ReadCapacityUnits: 1, WriteCapacityUnits: 1, }
 };
 
 dynamodb.createTable(params, function(err, data) {
-if (err) ppJson(err);
-else ppJson(data);
+    if (err) ppJson(err);
+    else ppJson(data);
 
 });
 ----
 
-Now start Quarkus Application in dev mode
+Now start Quarkus Application in dev mode 
 
 [source,bash]
 ----
@@ -278,7 +267,7 @@ To clean the deployments and related resources run:
 [source,bash]
 ----
 ./mvnw -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
--Daws.region=$AWS_REGION oc:undeploy
+  -Daws.region=$AWS_REGION oc:undeploy
 ----
 
 To clean the AWS Resources, update the *rollback* variable in "$DEMO_HOME/setup/project/playbook.yml" to be `True` and then run:
