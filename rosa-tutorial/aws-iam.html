@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Setup IAM on AWS :: ROSA Tutorial</title>
+    <link rel="canonical" href="https://kameshsampath.github.io/rosa-tutorial/rosa-tutorial/aws-iam.html">
+    <link rel="prev" href="setup.html">
+    <link rel="next" href="rds.html#prep-aws-iam">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://kameshsampath.github.io/rosa-tutorial">ROSA Tutorial</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rosa-tutorial" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup.html">Setup</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup.html#prerequisite">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup.html#setup-rosa">Setup ROSA Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#prep-aws-iam">AWS IAM</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-iam">Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#configure-k8s">Set KUBECONFIG</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-configurations">Setup Configurations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#create-iam-resources">Create AWS Resources</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rds.html#prep-aws-iam">AWS RDS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#aws-rds-pre-req">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#setup-rds">Setup RDS PostgreSQL</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#setup-build-service-ui">Build UI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rds.html#rds-build-service">Build and Deploy</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rds.html#rds-build-quarkus-service">Quarkus</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rds.html#rds-build-sb-service">Spring Boot</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#deploy">Access the Application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#deploy-in-another-ns">Deploy in another Namespace</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="dynamodb.html#prep-aws-iam">AWS DynamoDB</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#aws-dd-pre-req">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#setup-dd">Setup DynamoDB</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#setup-build-service-ui">Build UI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="dynamodb.html#dd-build-service">Build and Deploy</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="dynamodb.html#dd-build-quarkus-service">Quarkus</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="dynamodb.html#dd-build-sb-service">Spring Boot</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#deploy">Access the Application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#deploy-in-another-ns">Deploy in another Namespace</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="cleanup.html">Clean Up</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cleanup.html#cleanup-openshift">OpenShift Resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cleanup.html#cleanup-aws">AWS Resources</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ROSA Tutorial</a></li>
+    <li><a href="#prep-aws-iam">AWS IAM</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/kameshsampath/rosa-tutorial/edit/main/documentation/modules/ROOT/pages/aws-iam.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Setup IAM on AWS</h1>
+<div class="sect1">
+<h2 id="prep-aws-iam"><a class="anchor" href="#prep-aws-iam"></a>Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>At the end of this chapter you will be able to :</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Setup an <a href="https://openid.net/connect/">OpenID Connect</a> Provider with AWS IAM</p>
+</li>
+<li>
+<p>Setup a Role called <code>ROSADemosRole</code> which will be associated with OpenShift Service Account and provides the necessary authorizations as per <code>ROSADemosPolicy</code></p>
+</li>
+<li>
+<p>Setup a IAM Policy`ROSADemosPolicy` that allows,</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Perform CRUD operations on DynamoDB</p>
+</li>
+<li>
+<p>Perform CRUD operations on RDS (Postgres)</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="setup-iam"><a class="anchor" href="#setup-iam"></a>Setup</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Navigate to the tutorial folder:</p>
+</div>
+<div id="basics-nav-folder" class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd $TUTORIAL_HOME</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>$TUTORIAL_HOME/setup/hack.sh</code> will set all the aforementioned resources using <a href="https://www.ansible.com/">Ansible</a>, for the Ansible to setup the resources, you need to</p>
+</div>
+<div class="sect2">
+<h3 id="configure-k8s"><a class="anchor" href="#configure-k8s"></a>Configure <code>KUBECONFIG</code></h3>
+<div class="paragraph">
+<p>Setup <code>KUBECONFIG</code> variable, this variable will be used in by the setup scripts to connect to OpenShift cluster during setup.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p "$TUTORIAL_HOME/.kube/config"
+export KUBECONFIG="$TUTORIAL_HOME/.kube/config"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As the setup requires OpenShift user with <strong>ClusterAdmin</strong> privileges, try login with <strong>ClusterAdmin</strong> user :</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc login --token=&lt;token&gt; --server&lt;your api server&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To create the AWS resources, its required to provide AWS credentials to Ansible scripts:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cp <a href="https://github.com/kameshsampath/rosa-tutorial/setup/env/passwords.example" target="_blank" rel="noopener">$TUTORIAL_HOME/setup/env/passwords.example</a>  $TUTORIAL_HOME/setup/env/passwords</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Edit the <code>$TUTORIAL_HOME/setup/env/passwords</code> and update with your [AWS Access] and [Secret Keys].</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The <code>setup/.kube</code> and <code>setup/env/passwords</code> file are excluded by Git</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setup-configurations"><a class="anchor" href="#setup-configurations"></a>Setup Configurations</h3>
+<div class="paragraph">
+<p>The parameters used for the Ansible playbook are set in <a href="https://github.com/kameshsampath/rosa-tutorial/setup/env/extravars" target="_blank" rel="noopener">$TUTORIAL_HOME/setup/env/extravars</a> file.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Role Variables</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 50%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Variable Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Default value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">aws_region</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The default AWS region to use for creating the resources</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">us-west-2</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">oidc_bucket_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The s3 bucket used for holding the OpenId connect provider assets</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rosa-demos-oidc</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rosa_demo_role_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The AWS IAM role that will be used as part of the Demos</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ROSADemosRole</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rosa_demo_policy_name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The AWS IAM policy that will be used to control what the Kubernetes Service Accounts can do</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">ROSADemosPolicy</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">rollback</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Clean up all the created AWS resources</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">iam</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create OpenId Connect Provider and create IAM resources</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">False</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">create_aws_credentials_file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Create AWS Credential file</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">True</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>When running the setup playbook, these variables overrides the <a href="https://github.com/kameshsampath/ansible-role-rosa-demos#role-variables">Ansible Role ROSA Demos</a></p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>AWS S3 buckets expect the bucket names to be unique, its required you change the <code>oidc_bucket_name</code> to some value unique to you. Optionally update <code>aws_region</code> which is defaulted to <code>us-west-2</code> to AWS region of your choice.</p>
+</div>
+<div class="paragraph">
+<p>Edit the file <a href="https://github.com/kameshsampath/rosa-tutorial/setup/env/extravars" target="_blank" rel="noopener">$TUTORIAL_HOME/setup/env/extravars</a> and update <strong>oidc_bucket_name</strong> and <strong>aws_region</strong> to appropriate value the correspond to your settings.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="create-iam-resources"><a class="anchor" href="#create-iam-resources"></a>Create AWS Resources</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As described earlier the following setup script will run an Ansible playbook to create AWS resources and finally it will patch OpenShift Authentication to use OIDC Provider as <code>serviceAccountIssuer</code>.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$TUTORIAL_HOME/setup/hack.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the setup scripts runs sucessfully, set following environment variables based on your setup to be used when deploying your application in upcoming chapters:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export AWS_REGION='&lt;your aws_region value&gt;'
+export ROSA_DEMO_ROLE_ARN=$(aws iam get-role --role-name --output json ROSADemosRole | jq -r '.Role.Arn')</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="setup.html">Setup</a></span>
+  <span class="next"><a href="rds.html#prep-aws-iam">AWS RDS</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>

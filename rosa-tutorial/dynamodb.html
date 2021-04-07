@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>AWS DynamoDB :: ROSA Tutorial</title>
+    <link rel="canonical" href="https://kameshsampath.github.io/rosa-tutorial/rosa-tutorial/dynamodb.html">
+    <link rel="prev" href="rds.html#prep-aws-iam">
+    <link rel="next" href="cleanup.html">
+    <meta name="generator" content="Antora 2.3.4">
+    <link rel="stylesheet" href="../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://developers.redhat.com" target="_blank"><img src="../_/img/NewRHDFullLogo_4-color_white-wordmark.png" height="40px" alt="Red Hat Developer Program"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://kameshsampath.github.io/rosa-tutorial">ROSA Tutorial</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <a class="navbar-item" href="https://developers.redhat.com/cheatsheets/" target="_blank">Cheat Sheets</a>
+        <a class="navbar-item" href="https://developers.redhat.com/events/" target="_blank">Upcoming Events</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="rosa-tutorial" data-version="master">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup.html">Setup</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup.html#prerequisite">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="setup.html#setup-rosa">Setup ROSA Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="aws-iam.html#prep-aws-iam">AWS IAM</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="aws-iam.html#setup-iam">Setup</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="aws-iam.html#configure-k8s">Set KUBECONFIG</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="aws-iam.html#setup-configurations">Setup Configurations</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="aws-iam.html#create-iam-resources">Create AWS Resources</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rds.html#prep-aws-iam">AWS RDS</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#aws-rds-pre-req">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#setup-rds">Setup RDS PostgreSQL</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#setup-build-service-ui">Build UI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rds.html#rds-build-service">Build and Deploy</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rds.html#rds-build-quarkus-service">Quarkus</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rds.html#rds-build-sb-service">Spring Boot</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#deploy">Access the Application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rds.html#deploy-in-another-ns">Deploy in another Namespace</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#prep-aws-iam">AWS DynamoDB</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#aws-dd-pre-req">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-dd">Setup DynamoDB</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#setup-build-service-ui">Build UI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#dd-build-service">Build and Deploy</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#dd-build-quarkus-service">Quarkus</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#dd-build-sb-service">Spring Boot</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deploy">Access the Application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deploy-in-another-ns">Deploy in another Namespace</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="cleanup.html">Clean Up</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cleanup.html#cleanup-openshift">OpenShift Resources</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="cleanup.html#cleanup-aws">AWS Resources</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+  <a href="index.html" class="home-link"></a>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">ROSA Tutorial</a></li>
+    <li><a href="#prep-aws-iam">AWS DynamoDB</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/kameshsampath/rosa-tutorial/edit/main/documentation/modules/ROOT/pages/dynamodb.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">AWS DynamoDB</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>A simple REST API that uses <a href="https://aws.amazon.com/dynamodb/">AWS DynomoDB</a> as its data store.</p>
+</div>
+<div class="paragraph">
+<p>At the end of this chapter you will be able to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Setup a AWS DynamoDB Table</p>
+</li>
+<li>
+<p>Use the <code>ROSADemosRole</code> with OpenShift SA</p>
+</li>
+<li>
+<p>Deploy the <code>FruitsApp</code> Java Application</p>
+</li>
+<li>
+<p>Check and verify only authorized OpenShift SA is able peform CRUD on DynamoDB</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="aws-dd-pre-req"><a class="anchor" href="#aws-dd-pre-req"></a>Pre-Requisites</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Ensure that you have completed the following before running the exercises of this chapter:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="setup.html#setup-rosa" class="page">ROSA Cluster Setup</a></p>
+</li>
+<li>
+<p>All steps in <a href="aws-iam.html#prep-aws-iam" class="page">AWS IAM</a> is completed</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="setup-dd"><a class="anchor" href="#setup-dd"></a>Setup DynamoDB</h2>
+<div class="sectionbody">
+<div id="rds-nav-folder" class="paragraph">
+<p>Navigate to the tutorial folder:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd $TUTORIAL_HOME/dynamodb</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ensure you are on the right OpenShift project <code>rosa-demos</code>:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc project -q</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="connect-dd"><a class="anchor" href="#connect-dd"></a>Connect to DynamoDB</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>TODO</strong></p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="setup-build-service-ui"><a class="anchor" href="#setup-build-service-ui"></a>Build Service UI</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All the demos use demonstrates the integration with simple Fruits REST API,to play with API the demos provides <a href="https://reactjs.org">ReactJS UI</a>.</p>
+</div>
+<div class="paragraph">
+<p>The following section details how build UI to make it avaible for the other demo applications to use it as part of respective packaging.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw -N install<i class="conum" data-value="1"></i><b>(1)</b>
+./mvnw -Pbuild-ui clean install<i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Install the projects to the local maven repo</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Install the UI to the local maven repo, it will be used by the Quarkus and SpringBoot project packaging</td>
+</tr>
+</table>
+</div>
+<div class="sect2">
+<h3 id="dd-build-prereq"><a class="anchor" href="#dd-build-prereq"></a>Pre-Requisite</h3>
+<div class="paragraph">
+<p>Lets ensure if all the required environment variables are setup correctly</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export AWS_REGION='&lt;your aws_region value&gt;'<i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The AWS region to use</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export ROSA_DEMO_ROLE_ARN=$(aws iam get-role --role-name --output json ROSADemosRole | jq -r '.Role.Arn')<i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The AWS Role ARN for the <code>ROSADemosRole</code> IAM role</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dd-build-quarkus-service"><a class="anchor" href="#dd-build-quarkus-service"></a>Quarkus</h3>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw --projects=quarkus -Popenshift \
+  -Daws.region=$AWS_REGION \
+  -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
+  -Drds.host=$RDS_HOST \
+  -Drds.port=$RDS_PORT \
+  -Drds.db=$RDS_DATABASE \
+  clean package</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dd-build-sb-service"><a class="anchor" href="#dd-build-sb-service"></a>Spring Boot</h3>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw --projects=quarkus -Popenshift \
+  -Daws.region=$AWS_REGION \
+  -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
+  -Drds.host=$RDS_HOST \
+  -Drds.port=$RDS_PORT \
+  -Drds.db=$RDS_DATABASE \
+  clean package</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="aws-dd-check-apps"><a class="anchor" href="#aws-dd-check-apps"></a>Check Application Deployments</h3>
+<div class="paragraph">
+<p>Once the maven build completes successfully you can check the status of the application deployment:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get deploy -n rosa-demos</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Based on which variant of Application you deployed <strong>Quarkus</strong> or <strong>SpringBoot</strong> you should see an output as shown below. Assuming the <strong>Quarkus</strong> variant deployed:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                      READY   UP-TO-DATE   AVAILABLE   AGE
+db-adminer                1/1     1            1           19h
+pgsql-client              1/1     1            1           14h
+<mark>rosa-fruits-app-quarkus   1/1     1            1           4h48m</mark></code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can also verify the same via ROSA OpenShift Web Console by navigating to <code>rosa-demos</code> project</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="aws-rds-verify-apps"><a class="anchor" href="#aws-rds-verify-apps"></a>Check Application Deployments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The AWS IAM role allows accessing the application only from <code>rosa-demos</code> workspace and as <code>rosa-demo-sa</code>,</p>
+</div>
+<div class="paragraph">
+<p>Get the Route:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export APP_URL="http://$(oc get route rosa-fruits-app -n rosa-demos -ojsonpath='{.spec.host}')"</code></pre>
+</div>
+</div>
+<div class="sect2">
+<h3 id="verify-use-app-ui"><a class="anchor" href="#verify-use-app-ui"></a>Application UI</h3>
+<div class="paragraph">
+<p>Open the <code>$APP_URL</code> in your browser. The UI will allow you to list, add and delete fruits.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The List will display an error if you are not authorized to access the APP :)</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="verify-use-swagger-ui"><a class="anchor" href="#verify-use-swagger-ui"></a>Using Swagger UI</h3>
+<div class="paragraph">
+<p>You can access the Swagger UI from <a href="http://$APP_URL/swagger-ui" class="bare">http://$APP_URL/swagger-ui</a> and perform the REST operations.</p>
+</div>
+<div class="paragraph">
+<p>The following REST URI end points are available:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="GET Method"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Lists all fruit</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>e.g.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">http $APP_URL/api/fruit/apple</code></pre>
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>$APP_URL/api/fruit/{name} - Get a fruit by its <code>name</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>e.g.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+http $APP_URL/api/fruit/apple
+----</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="POST Method"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Adds a fruit, takes a JSON payload</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
+"name": "apple",
+"season": "fall"
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>e.g.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">---
+http POST $APP_URL/api/fruit name=apple season=fall
+----</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="DELETE Method"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>Delete a fruit by its <code>name</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>e.g.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">http DELETE $APP_URL/api/fruit/apple</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="aws-rds-verify-access"><a class="anchor" href="#aws-rds-verify-access"></a>Verify Access</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To make sure the IAM works, try deploying the application a different namespace, for e.g. <code>demos</code></p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc new-project demos</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now do the <a href="#rds-build-quarkus-service">Quarkus</a> or <a href="#rds-build-sb-service">SpringBoot</a> deployment on the <code>demos</code> namespace.</p>
+</div>
+<div class="paragraph">
+<p>Now when you try any of the API methods above, you should get HTTP 403 as the IAM policy controls the Service Account (<code>rosa-demo-sa</code>) and its namespace.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="rds.html#prep-aws-iam">AWS RDS</a></span>
+  <span class="next"><a href="cleanup.html">Clean Up</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://developers.redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
