@@ -1,5 +1,6 @@
 = AWS RDS
 include::_attributes.adoc[]
+:rds:
 
 A simple REST API that uses https://aws.amazon.com/rds/[AWS RDS] as its data store.
 
@@ -49,14 +50,12 @@ include::ROOT:partial$apps.adoc[tags="ui"]
 [#rds-build-service]
 == Build Service
 
-The Fruits API Java Application can be deployed as https://quarkus.io[Quarkus] or  https://springboot.io[Spring Boot]. 
-
-The following section details on how to deploy them.
+The Fruits API Java Application can be deployed as https://quarkus.io[Quarkus] or  https://springboot.io[Spring Boot]. The following section details on how to deploy them.
 
 [#rds-build-prereq]
-=== Pre-Requisite
+=== Set Environment
 
-Lets ensure if all the required environment variables are setup correctly
+Let's ensure if all the required environment variables are setup correctly
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -93,15 +92,7 @@ export RDS_DATABASE="fruitsdb"#<.>
 ----
 <.> The RDS Database which is *fruitsdb*
 
-[#rds-build-quarkus-service]
-=== Quarkus
-
-include::ROOT:partial$commands.adoc[tags="quarkus"]
-
-[#rds-build-sb-service]
-=== Spring Boot
-
-include::ROOT:partial$commands.adoc[tags="springboot"]
+include::ROOT:partial$commands.adoc[]
 
 [#aws-rds-check-apps]
 === Check Application Deployments
@@ -164,10 +155,7 @@ You should notice errors on the log, something similar to,
 [source,bash,subs="+quotes"]
 ----
 ...
-rosa-fruits-app-quarkus-547d97fd7-mp274 #devkameshs-rosa-fruits-app-quarkus java.util.NoSuchElementException: No value present#<.>
-rosa-fruits-app-quarkus-547d97fd7-mp274 devkameshs-rosa-fruits-app-quarkus      at java.base/java.util.Optional.orElseThrow(Optional.java:382)
-rosa-fruits-app-quarkus-547d97fd7-mp274 devkameshs-rosa-fruits-app-quarkus      at dev.kameshs.rosa.RdsIamAuthenticationProvider.getCredentials(RdsIamAuthenticationProvider.java:72)
-rosa-fruits-app-quarkus-547d97fd7-mp274 devkameshs-rosa-fruits-app-quarkus      at dev.kameshs.rosa.RdsIamAuthenticationProvider_ClientProxy.getCredentials(RdsIamAuthenticationProvider_ClientProxy.zig:128)
+com.amazonaws.services.securitytoken.model.AWSSecurityTokenServiceException: #Not authorized to perform sts:AssumeRoleWithWebIdentity (Service: AWSSecurityTokenService; Status Code: 403; Error Code: AccessDenied; Request ID: 8b16ef26-5bf7-4c45-9ec5-75e92470e486; Proxy: null)#
 ...
 ----
 

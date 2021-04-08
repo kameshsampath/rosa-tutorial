@@ -14,7 +14,7 @@ content:
 
 asciidoc:
   attributes:
-    rosa-cli-version: 1.0.2
+    rosa-cli-version: 1.0.4
     openshift-version: 4.7.2
     aws-cli-version: 1.5.2
     maven-version: 3.6.3

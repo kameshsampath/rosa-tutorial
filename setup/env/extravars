@@ -8,3 +8,4 @@ rosa_demo_policy_name: ROSADemosPolicy
 rollback: False
 create_aws_credentials_file: True
 iam: True
+dynamodb: True

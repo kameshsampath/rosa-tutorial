@@ -1,9 +1,24 @@
 #tag::ui[]
 == Build Service UI
 
+[NOTE]
+====
+Do this only if you have not already build it or made some changes to UI
+====
+
 All the demos use demonstrates the integration with simple Fruits REST API,to play with API the demos provides https://reactjs.org[ReactJS UI]. 
 
-The following section details how build UI to make it avaible for the other demo applications to use it as part of respective packaging.
+The following section details how build UI to make it available for the other demo applications to use it as part of respective packaging.
+
+Navigate to tutorial home folder
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+cd $TUTORIAL_HOME
+----
+
+Run maven commands to build and install UI artifacts to local repo:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]

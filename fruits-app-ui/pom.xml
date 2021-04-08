@@ -17,15 +17,6 @@
   </properties>
 
   <build>
-    <resources>
-      <resource>
-        <directory>${project.basedir}/src/main/resources</directory>
-        <includes>
-          <include>build/**</include>
-        </includes>
-        <targetPath>${project.build.directory}/classes</targetPath>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
@@ -39,7 +30,7 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <workingDirectory>src/main/resources</workingDirectory>
+              <workingDirectory>src/main/frontend</workingDirectory>
               <executable>npm</executable>
               <arguments>
                 <argument>install</argument>
@@ -53,7 +44,7 @@
               <goal>exec</goal>
             </goals>
             <configuration>
-              <workingDirectory>src/main/resources</workingDirectory>
+              <workingDirectory>src/main/frontend</workingDirectory>
               <executable>npm</executable>
               <arguments>
                 <argument>run</argument>
@@ -64,33 +55,27 @@
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-remote-resources-plugin</artifactId>
-        <version>1.7.0</version>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>3.2.0</version>
         <executions>
           <execution>
-            <phase>package</phase>
+            <id>add-resource</id>
+            <phase>generate-resources</phase>
             <goals>
-              <goal>bundle</goal>
+              <goal>add-resource</goal>
             </goals>
+            <configuration>
+              <resources>
+                <resource>
+                  <directory>${project.basedir}/src/main/frontend/build
+                  </directory>
+                  <targetPath>frontend</targetPath>
+                </resource>
+              </resources>
+            </configuration>
           </execution>
         </executions>
-        <configuration>
-          <includes>
-            <include>**/build/**</include>
-          </includes>
-          <excludes>
-            <exclude>**/node_modules/**</exclude>
-            <exclude>**/src/**</exclude>
-            <exclude>**/public/**</exclude>
-            <exclude>.env</exclude>
-            <exclude>package.json</exclude>
-            <exclude>package-lock.json</exclude>
-            <exclude>README.md</exclude>
-            <exclude>yarn.lock</exclude>
-            <exclude>tsconfig.json</exclude>
-          </excludes>
-        </configuration>
       </plugin>
     </plugins>
   </build>

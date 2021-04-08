@@ -5,3 +5,4 @@
 :setup-env-repo: setup/env
 :env-extravars-file: extravars
 :github-repo: https://github.com/kameshsampath/rosa-tutorial
+:github-branch: main

@@ -6,9 +6,9 @@ include::_attributes.adoc[]
 
 At the end of this chapter you will be able to :
 
-* Setup an https://openid.net/connect/[OpenID Connect] Provider with AWS IAM
-* Setup a Role called `ROSADemosRole` which will be associated with OpenShift Service Account and provides the necessary authorizations as per `ROSADemosPolicy`
-* Setup a IAM Policy`ROSADemosPolicy` that allows,
+* Set up an https://openid.net/connect/[OpenID Connect] Provider with AWS IAM
+* Set up a Role called `ROSADemosRole` which will be associated with OpenShift Service Account and provides the necessary authorizations as per `ROSADemosPolicy`
+* Set up a IAM Policy`ROSADemosPolicy` that allows,
   ** Perform CRUD operations on DynamoDB
   ** Perform CRUD operations on RDS (Postgres)
 
@@ -24,33 +24,14 @@ Navigate to the tutorial folder:
 cd $TUTORIAL_HOME
 ----
 
-The `$TUTORIAL_HOME/setup/hack.sh` will set all the aforementioned resources using https://www.ansible.com/[Ansible], for the Ansible to setup the resources, you need to
-
-[#configure-k8s]
-=== Configure `KUBECONFIG` 
-
-Setup `KUBECONFIG` variable, this variable will be used in by the setup scripts to connect to OpenShift cluster during setup.
-
-[.console-input]
-[source,bash,subs="+macros,+attributes"]
-----
-mkdir -p "$TUTORIAL_HOME/.kube/config"
-export KUBECONFIG="$TUTORIAL_HOME/.kube/config"
-----
-
-As the setup requires OpenShift user with *ClusterAdmin* privileges, try login with *ClusterAdmin* user :
-
-[source,bash,subs="+macros,+attributes"]
-----
-oc login --token=<token> --server<your api server>
-----
+The `$TUTORIAL_HOME/setup/hack.sh` will set all the aforementioned resources using https://www.ansible.com/[Ansible], for the Ansible to set up the resources, you need to
 
 To create the AWS resources, its required to provide AWS credentials to Ansible scripts:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
 ----
-cp link:{github-repo}/{setup-env-repo}/{env-password-file}[$TUTORIAL_HOME/setup/env/passwords.example^]  $TUTORIAL_HOME/setup/env/passwords
+cp link:{github-repo}/blob/{github-branch}/{setup-env-repo}/{env-password-file}[$TUTORIAL_HOME/setup/env/passwords.example^]  $TUTORIAL_HOME/setup/env/passwords
 ----
 
 Edit the `$TUTORIAL_HOME/setup/env/passwords` and update with your [AWS Access] and [Secret Keys].
@@ -63,7 +44,7 @@ The `setup/.kube` and `setup/env/passwords` file are excluded by Git
 [#setup-configurations]
 === Setup Configurations
 
-The parameters used for the Ansible playbook are set in link:{github-repo}/{setup-env-repo}/{env-extravars-file}[$TUTORIAL_HOME/setup/env/extravars^] file. 
+The parameters used for the Ansible playbook are set in link:{github-repo}/blob/{github-branch}/{setup-env-repo}/{env-extravars-file}[$TUTORIAL_HOME/setup/env/extravars^] file.
 
 include::https://raw.githubusercontent.com/kameshsampath/ansible-role-rosa-demos/master/role_variables.adoc[]
 
@@ -74,7 +55,7 @@ When running the setup playbook, these variables overrides the https://github.co
 
 AWS S3 buckets expect the bucket names to be unique, its required you change the `oidc_bucket_name` to some value unique to you. Optionally update `aws_region` which is defaulted to `us-west-2` to AWS region of your choice.
 
-Edit the file link:{github-repo}/{setup-env-repo}/{env-extravars-file}[$TUTORIAL_HOME/setup/env/extravars^] and update *oidc_bucket_name* and *aws_region* to appropriate value the correspond to your settings.
+Edit the file link:{github-repo}/blob/{github-branch}/{setup-env-repo}/{env-extravars-file}[$TUTORIAL_HOME/setup/env/extravars^] and update *oidc_bucket_name* and *aws_region* to appropriate value corresponding to your settings.
 
 [#create-iam-resources]
 == Create AWS Resources
@@ -87,7 +68,7 @@ As described earlier the following setup script will run an Ansible playbook to 
 $TUTORIAL_HOME/setup/hack.sh
 ----
 
-Once the setup scripts runs sucessfully, set following environment variables based on your setup to be used when deploying your application in upcoming chapters:
+Once the setup scripts runs successfully, set following environment variables based on your setup to be used when deploying your application in upcoming chapters:
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]

@@ -1,14 +1,14 @@
-= ROSA Fruits Application
+= ROSA Fruits Application(RDS)
 :experimental:
 
-A simple REST API that uses https://aws.amazon.com/dynamodb/[AWS DynomoDB] as its data store. The application is intended to demonstrate how to integrate the AWS Native Services from an OpenShift cluster deployed via   https://aws.amazon.com/rosa/[ROSA].
+A simple REST API that uses https://aws.amazon.com/rds/[AWS RDS] as its data store. The application is intended to demonstrate how to integrate the AWS Native Services from an OpenShift cluster deployed via   https://aws.amazon.com/rosa/[ROSA].
 
 == Pre-Requisites
 
 - AWS Account with permissions to:
- * Create IAM Role
- * Create IAM Policy
- * Create OIDC Provider
+* Create IAM Role
+* Create IAM Policy
+* Create OIDC Provider
 
 - https://aws.amazon.com/cli/[AWS CLI]
 
@@ -247,7 +247,7 @@ dynamodb.createTable(params, function(err, data) {
 });
 ----
 
-Now start Quarkus Application in dev mode 
+Now start Quarkus Application in dev mode
 
 [source,bash]
 ----

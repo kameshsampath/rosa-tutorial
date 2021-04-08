@@ -31,11 +31,16 @@ Please have them installed and configured before you get started with any of the
 | `dnf install docker`
 | https://docs.docker.com/docker-for-windows/install[Docker for Windows]
 
-
 | `openshift-client {openshift-version}`
 | https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.7/openshift-client-mac.tar.gz[Download]
 | https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.7/openshift-client-linux.tar.gz[Download]
 | https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.7/openshift-client-windows.zip[Download]
+
+| `rosa-cli {rosa-cli-version}`
+| https://github.com/openshift/rosa/releases/download/{rosa-cli-version}/rosa-darwin-amd64[Download]
+| https://github.com/openshift/rosa/releases/download/{rosa-cli-version}/rosa-linux-amd64[Download]
+| https://github.com/openshift/rosa/releases/download/{rosa-cli-version}/rosa-windows-amd64.exe[Download]
+
 
 | https://github.com/wercker/stern[stern]
 | `brew install stern`
@@ -60,8 +65,12 @@ Please have them installed and configured before you get started with any of the
 |===
 
 [#setup-rosa]
-== Setup ROSA
+== ROSA Setup
 
+We will setup ROSA cluster using ROSA CLI that you downloaded, if you have not done it yet please check <<prerequisite,Downloads>>.
+
+[#setup-cluster]
+=== Create Cluster
 [.console-input]
 [source,bash]
 ----
@@ -70,7 +79,97 @@ rosa create cluster --cluster-name="my-rosa-cluster"
 
 The command above will create the ROSA cluster in your default AWS region, type `rosa --help` for more information.
 
-More inforamation and options for ROSA setup can be found in the https://docs.openshift.com/rosa/welcome/index.html[official documentation].
+More information and options for ROSA setup can be found in the https://docs.openshift.com/rosa/welcome/index.html[official documentation].
+
+[IMPORTANT]
+====
+* It will take around 40 minutes for the cluster to be up and running. Please make sure the cluster is ready before you proceed further with the tutorial.
+====
+
+[#setup-create-admin]
+=== Create Admin User
+
+You need to have `cluster-admin` to perform the exercises of this tutorial, to create the admin run:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+rosa create admin --cluster=my-rosa-cluster
+----
+
+[.console-output]
+[source,bash,subs="+macros,+attributes"]
+----
+W: It is recommended to add an identity provider to login to this cluster. See 'rosa create
+idp --help' for more information.
+I: Admin account has been added to cluster 'my-rosa-cluster.
+I: Please securely store this generated password. If you lose this password you can delete a
+nd recreate the cluster admin user.
+I: To login, run the following command:
+
+   oc login https://api.my-rosa-cluster.vlsn.p1.openshiftapps.com:6443 --username cluster-admi
+n --password #<generated password>#
+
+I: It may take up to a minute for the account to become active.
+----
+
+For convenience set the OpenShift Admin username and password as environment variables
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+export OPENSHIFT_ADMIN='cluster-admin'
+export OPENSHIFT_ADMIN_PASSWORD='<password from previous step>'
+----
+
+[#setup-access-console]
+=== Use Web Console to Login
+
+You can find the OpenShift Web Console URL using:
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+rosa describe --cluster=my-rosa-cluster
+----
+
+When you open the url in the web browser, click on "Cluster-Admin" realm and login using the user id $OPENSHIFT_ADMIN  and password OPENSHIFT_ADMIN_PASSWORD
+
+[#configure-k8s]
+=== Configure `KUBECONFIG`
+
+Setup `KUBECONFIG` variable, this variable will be used in by the setup scripts to connect to OpenShift cluster during setup.
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+mkdir -p "$TUTORIAL_HOME/.kube/config"
+export KUBECONFIG="$TUTORIAL_HOME/.kube/config"
+----
+
+As the setup requires OpenShift user with *ClusterAdmin* privileges, try login with *ClusterAdmin* user :
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+# Line 8 of `rosa describe cluster --cluster=my-rosa-cluster` has the API URL
+export OPENSHIFT_API_URL=$(rosa describe cluster --cluster=my-rosa-cluster | awk 'NR==8{print $3}')
+oc login --server=$OPENSHIFT_ADMIN \
+  --user $OPENSHIFT_ADMIN_PASSWORD \
+  --password $OPENSHIFT_ADMIN_PASSWORD
+----
+
+[NOTE]
+====
+You can also view details of the cluster using the details page URL
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+# Look for Details Page
+rosa describe cluster --cluster=my-rosa-cluster
+----
+====
 
 [#download-tutorial]
 == Get the Tutorial sources

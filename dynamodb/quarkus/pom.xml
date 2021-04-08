@@ -97,25 +97,7 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-remote-resources-plugin</artifactId>
-        <version>1.7.0</version>
-        <executions>
-          <execution>
-            <id>process-remote-resources</id>
-            <goals>
-              <goal>process</goal>
-            </goals>
-            <configuration>
-              <resourceBundles>
-                <resourceBundle>dev.kameshs:fruits-app-ui:${fruits-ui.version}
-                </resourceBundle>
-              </resourceBundles>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+
       <plugin>
         <groupId>org.eclipse.jkube</groupId>
         <artifactId>openshift-maven-plugin</artifactId>
@@ -166,11 +148,9 @@
           </images>
         </configuration>
       </plugin>
-
     </plugins>
   </build>
   <profiles>
-
     <profile>
       <id>native</id>
       <activation>

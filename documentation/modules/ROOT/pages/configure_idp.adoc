@@ -1,0 +1,42 @@
+
+To create the IDP and associate wit with the ROSA cluster, you need the following
+
+* OpenShift Console URL
+* OpenShift Authorization Callback URL
+* A https://docs.github.com/en/developers/apps/creating-an-oauth-app[GitHub oAuth] application
+* A GitHub Organization to associate with ROSA Cluster, which allows you to control who can access the cluster. If you don't have a GitHub organization yet, it is recommended to create one before proceeding further
+
+Let's create GitHub oAuth App and associate it with ROSA Cluster,
+
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+rosa create idp --cluster=my-rosa-cluster --type=github --interactive
+----
+
+[.console-output]
+[source,bash,subs="+macros,+attributes"]
+----
+Any optional fields can be left empty and a default will be selected.
+? Identity provider name: github-1
+? Restrict to members of: organizations
+? GitHub organizations: workspace7
+? To use GitHub as an identity provider, you must first register the application:
+  - Open the following URL:
+    '<GitHub URL to create oAuth App>'
+  - Click on 'Register application'
+? Client ID: '<your client id from github oauth app>'
+? Client Secret: [? for help] '<your client secret from github oauth app>'
+? GitHub Enterprise Hostname (optional):
+? Mapping method: claim
+I: Configuring IDP for cluster 'kameshs-demos'
+I: Identity Provider 'github-1' has been created.
+   It will take up to 1 minute for this configuration to be enabled.
+   To add cluster administrators, see 'rosa create user --help'.
+   To login into the console, open https://console-openshift-console.apps.my-rosa-cluster.vlsn.p1.openshiftapps.com and click on github.
+----
+
+[IMPORTANT]
+====
+As of now ROSA does not allow associating admin user from the IDP via CLI
+====

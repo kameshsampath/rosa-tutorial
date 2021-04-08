@@ -6,13 +6,16 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 CONTAINER_CMD=${CONTAINER_CMD:-docker}
 ANSIBLE_RUNNER_IMAGE=quay.io/kameshsampath/openshift-demos-ansible-ee
 
+# force pull
+$CONTAINER_CMD pull quay.io/kameshsampath/openshift-demos-ansible-ee
+
 if [ -f "$KUBECONFIG" ];
 then
   mkdir -p "$CURRENT_DIR/.kube"
   < "$KUBECONFIG" tee "$CURRENT_DIR/.kube/config" > /dev/null
 fi
 
-$CONTAINER_CMD run -it  \
+$CONTAINER_CMD run -it --rm  \
    -v "$CURRENT_DIR/project:/runner/project:z" \
    -v "$CURRENT_DIR/inventory:/runner/inventory:z" \
    -v "$CURRENT_DIR/env:/runner/env:z" \

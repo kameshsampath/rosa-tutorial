@@ -5,21 +5,21 @@ A simple REST API that uses https://aws.amazon.com/dynamodb/[AWS DynomoDB] as it
 
 At the end of this chapter you will be able to:
 
-* Setup a AWS DynamoDB Table
+* Set up an AWS DynamoDB Table
 * Use the `ROSADemosRole` with OpenShift SA
 * Deploy the `FruitsApp` Java Application
 * Check and verify only authorized OpenShift SA is able peform CRUD on DynamoDB
 
-[#aws-dd-pre-req]
+[#dd-build-prereq]
 == Pre-Requisites
 
 Ensure that you have completed the following before running the exercises of this chapter:
 
 * xref:setup.adoc#setup-rosa[ROSA Cluster Setup]
-* All steps in xref:aws-iam.adoc#prep-aws-iam[AWS IAM] is completed 
+* All steps in xref:aws-iam.adoc#prep-aws-iam[AWS IAM] is completed
 
-[#setup-dd]
-== Setup DynamoDB
+[#setup-build-service-ui]
+include::ROOT:partial$apps.adoc[tags="ui"]
 
 [#rds-nav-folder]
 Navigate to the tutorial folder:
@@ -38,18 +38,22 @@ Ensure you are on the right OpenShift project `rosa-demos`:
 oc project -q
 ----
 
-[#connect-dd]
-== Connect to DynamoDB
+[#setup-dd]
+=== Setup DynamoDB
 
-*TODO*
+Creation of `DynamoDB` is disabled by default, you need to enable it create the table *QuarkusFruits* that will be used as part of this Demo:
 
-[#setup-build-service-ui]
-include::ROOT:partial$apps.adoc[tags="ui"]
+Edit the file link:{github-repo}/blob/{github-branch}/{setup-env-repo}/{env-extravars-file}[$TUTORIAL_HOME/setup/env/extravars#L11^] and update *dynamodb* to be `True`.
 
-[#dd-build-prereq]
-=== Pre-Requisite
+Run the setup script to create the DynamoDB table,
 
-Lets ensure if all the required environment variables are setup correctly
+[.console-input]
+[source,bash,subs="+macros,+attributes"]
+----
+$TUTORIAL_HOME/setup/hack.sh
+----
+
+Let's ensure if all the required environment variables are set up correctly
 
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
@@ -65,15 +69,10 @@ export ROSA_DEMO_ROLE_ARN=$(aws iam get-role --role-name --output json ROSADemos
 ----
 <.> The AWS Role ARN for the `ROSADemosRole` IAM role
 
-[#dd-build-quarkus-service]
-=== Quarkus
+[#dd-build-service]
+=== Build and Deploy Service
 
-include::ROOT:partial$commands.adoc[tags="quarkus"]
-
-[#dd-build-sb-service]
-=== Spring Boot
-
-include::ROOT:partial$commands.adoc[tags="springboot"]
+include::ROOT:partial$commands.adoc[]
 
 [#aws-dd-check-apps]
 === Check Application Deployments

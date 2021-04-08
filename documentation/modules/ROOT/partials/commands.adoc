@@ -1,27 +1,37 @@
-#tag::quarkus[]
+[tabs]
+====
+Quarkus::
++
+--
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
-----
+-----
 ./mvnw --projects=quarkus -Popenshift \
   -Daws.region=$AWS_REGION \
   -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
+ifdef::rds[]
   -Drds.host=$RDS_HOST \
   -Drds.port=$RDS_PORT \
   -Drds.db=$RDS_DATABASE \
+endif::[]
   clean package
-----
-#end::quarkus[]
-
-#tag::springboot[]
+-----
+--
+SpringBoot::
++
+--
 [.console-input]
 [source,bash,subs="+macros,+attributes"]
-----
-./mvnw --projects=quarkus -Popenshift \
+-----
+./mvnw --projects=springboot -Popenshift \
   -Daws.region=$AWS_REGION \
   -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
+ifdef::rds[]
   -Drds.host=$RDS_HOST \
   -Drds.port=$RDS_PORT \
   -Drds.db=$RDS_DATABASE \
+endif::[]
   clean package
-----
-#end::springboot[]
+-----
+--
+====
