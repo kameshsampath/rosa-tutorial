@@ -63,6 +63,7 @@ public class FruitResource {
   public Response addFruit(Fruit fruit) {
     try {
       LOGGER.log(Level.INFO, "Saving fruit {0}", fruit);
+      fruit.createtime=System.currentTimeMillis();
       service.add(fruit);
       return Response
         .created(URI.create("/api/fruit/" + fruit.name))

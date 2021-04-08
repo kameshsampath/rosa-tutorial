@@ -14,9 +14,13 @@ import org.apache.commons.io.IOUtils;
 @Path("/")
 public class FrontEndResource {
 
-  final static String STATIC_RESOURCES_DIR = "/build/";
-  private static final String FALLBACK_RESOURCE =
-    STATIC_RESOURCES_DIR + "index.html";
+  private static final String FALLBACK_RESOURCE;
+  private static final String STATIC_RESOURCE_BASE_DIR;
+
+  static {
+    STATIC_RESOURCE_BASE_DIR = "/frontend";
+    FALLBACK_RESOURCE = STATIC_RESOURCE_BASE_DIR + "/index.html";
+  }
 
   @GET
   @Path("/")
@@ -26,16 +30,12 @@ public class FrontEndResource {
 
   @GET
   @Path("/{fileName:.+}")
-  public Response getFrontendStaticFile(@PathParam("fileName") String fileName)
-    throws IOException {
-
-    final InputStream requestedFileStream = FrontEndResource.class.getResourceAsStream(
-      STATIC_RESOURCES_DIR + fileName);
+  public Response getFrontendStaticFile(@PathParam("fileName") String fileName) throws IOException {
+    final InputStream requestedFileStream = FrontEndResource.class.getResourceAsStream(STATIC_RESOURCE_BASE_DIR+fileName);
     final InputStream inputStream = requestedFileStream != null ?
       requestedFileStream :
       FrontEndResource.class.getResourceAsStream(FALLBACK_RESOURCE);
-    final StreamingOutput streamingOutput = outputStream -> IOUtils.copy(
-      inputStream, outputStream);
+    final StreamingOutput streamingOutput = outputStream -> IOUtils.copy(inputStream, outputStream);
     return Response
       .ok(streamingOutput)
       .cacheControl(CacheControl.valueOf("max-age=900"))

@@ -6,8 +6,10 @@ public class Fruit {
 
   public String name;
   public String season;
+  public long  createtime;
 
   public Fruit() {
+    this.createtime = System.currentTimeMillis();
   }
 
   @Override
