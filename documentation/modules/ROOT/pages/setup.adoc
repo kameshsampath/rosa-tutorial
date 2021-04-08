@@ -57,6 +57,12 @@ Please have them installed and configured before you get started with any of the
 | `dnf install httpie`
 | https://httpie.org/doc#windows-etc
 
+|  nodeJS `14.6.1.LTS`
+| https://nodejs.org/en/[Download]
+| https://nodejs.org/en/[Download]
+| https://nodejs.org/en/[Download]
+
+
 | https://stedolan.github.io/jq/[jq]
 | brew install jq
 | <package manager> jq e.g. For Fedora sudo dnf install jq
