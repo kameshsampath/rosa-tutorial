@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>AWS RDS :: ROSA Tutorial</title>
     <link rel="canonical" href="https://kameshsampath.github.io/rosa-tutorial/rosa-tutorial/rds.html">
-    <link rel="prev" href="aws-iam.html#prep-aws-iam">
-    <link rel="next" href="dynamodb.html#prep-aws-iam">
+    <link rel="prev" href="dynamodb.html">
+    <link rel="next" href="cleanup.html">
     <meta name="generator" content="Antora 2.3.4">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -59,7 +59,22 @@
     <a class="nav-link" href="setup.html#prerequisite">Prerequisites</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="setup.html#setup-rosa">Setup ROSA Cluster</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup.html#setup-rosa">Setup ROSA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="setup.html#setup-cluster">Create Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="setup.html#setup-create-admin">Create Cluster Admin</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="setup.html#setup-access-console">Access Web Console</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="setup.html#configure-k8s">Set KUBECONFIG</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -71,9 +86,6 @@
     <a class="nav-link" href="aws-iam.html#setup-iam">Setup</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="aws-iam.html#configure-k8s">Set KUBECONFIG</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="aws-iam.html#setup-configurations">Setup Configurations</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -83,7 +95,31 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#prep-aws-iam">AWS RDS</a>
+    <a class="nav-link" href="dynamodb.html">AWS DynamoDB</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#dd-build-prereq">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#setup-dd">Setup DynamoDB</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#setup-build-service-ui">Build UI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#dd-build-service">Build and Deploy Service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#aws-dd-check-apps">Access the Application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#aws-rds-verify-apps">Verify Access</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rds.html">AWS RDS</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#aws-rds-pre-req">Prerequisites</a>
@@ -95,55 +131,13 @@
     <a class="nav-link" href="#setup-build-service-ui">Build UI</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#rds-build-service">Build and Deploy</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rds-build-quarkus-service">Quarkus</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#rds-build-sb-service">Spring Boot</a>
-  </li>
-</ul>
+    <a class="nav-link" href="#rds-build-service">Build and Deploy Service</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#deploy">Access the Application</a>
+    <a class="nav-link" href="#aws-rds-check-apps">Access the Application</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#deploy-in-another-ns">Deploy in another Namespace</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="dynamodb.html#prep-aws-iam">AWS DynamoDB</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#aws-dd-pre-req">Prerequisites</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#setup-dd">Setup DynamoDB</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#setup-build-service-ui">Build UI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="dynamodb.html#dd-build-service">Build and Deploy</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="dynamodb.html#dd-build-quarkus-service">Quarkus</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="dynamodb.html#dd-build-sb-service">Spring Boot</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#deploy">Access the Application</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#deploy-in-another-ns">Deploy in another Namespace</a>
+    <a class="nav-link" href="#aws-rds-verify-access">Verify Access</a>
   </li>
 </ul>
   </li>
@@ -174,7 +168,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">ROSA Tutorial</a></li>
-    <li><a href="#prep-aws-iam">AWS RDS</a></li>
+    <li><a href="rds.html">AWS RDS</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/kameshsampath/rosa-tutorial/edit/main/documentation/modules/ROOT/pages/rds.adoc">Edit this Page</a></div>
@@ -258,11 +252,36 @@
 <div class="sect1">
 <h2 id="setup-build-service-ui"><a class="anchor" href="#setup-build-service-ui"></a>Build Service UI</h2>
 <div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>Do this only if you have not already build it or made some changes to UI</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>All the demos use demonstrates the integration with simple Fruits REST API,to play with API the demos provides <a href="https://reactjs.org">ReactJS UI</a>.</p>
 </div>
 <div class="paragraph">
-<p>The following section details how build UI to make it avaible for the other demo applications to use it as part of respective packaging.</p>
+<p>The following section details how build UI to make it available for the other demo applications to use it as part of respective packaging.</p>
+</div>
+<div class="paragraph">
+<p>Navigate to tutorial home folder</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd $TUTORIAL_HOME</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Run maven commands to build and install UI artifacts to local repo:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -288,15 +307,12 @@
 <h2 id="rds-build-service"><a class="anchor" href="#rds-build-service"></a>Build Service</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Fruits API Java Application can be deployed as <a href="https://quarkus.io">Quarkus</a> or  <a href="https://springboot.io">Spring Boot</a>.</p>
-</div>
-<div class="paragraph">
-<p>The following section details on how to deploy them.</p>
+<p>The Fruits API Java Application can be deployed as <a href="https://quarkus.io">Quarkus</a> or  <a href="https://springboot.io">Spring Boot</a>. The following section details on how to deploy them.</p>
 </div>
 <div class="sect2">
-<h3 id="rds-build-prereq"><a class="anchor" href="#rds-build-prereq"></a>Pre-Requisite</h3>
+<h3 id="rds-build-prereq"><a class="anchor" href="#rds-build-prereq"></a>Set Environment</h3>
 <div class="paragraph">
-<p>Lets ensure if all the required environment variables are setup correctly</p>
+<p>Let&#8217;s ensure if all the required environment variables are setup correctly</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -363,9 +379,19 @@
 </tr>
 </table>
 </div>
+<div class="tabset is-loading">
+<div class="ulist tabs">
+<ul>
+<li>
+<p><a id="tabset1_quarkus"></a>Quarkus</p>
+</li>
+<li>
+<p><a id="tabset1_springboot"></a>SpringBoot</p>
+</li>
+</ul>
 </div>
-<div class="sect2">
-<h3 id="rds-build-quarkus-service"><a class="anchor" href="#rds-build-quarkus-service"></a>Quarkus</h3>
+<div class="content">
+<div class="tab-pane" aria-labelledby="tabset1_quarkus">
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw --projects=quarkus -Popenshift \
@@ -378,17 +404,19 @@
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="rds-build-sb-service"><a class="anchor" href="#rds-build-sb-service"></a>Spring Boot</h3>
+<div class="tab-pane" aria-labelledby="tabset1_springboot">
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw --projects=quarkus -Popenshift \
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">./mvnw --projects=springboot -Popenshift \
   -Daws.region=$AWS_REGION \
   -Daws.role.arn=$ROSA_DEMO_ROLE_ARN \
   -Drds.host=$RDS_HOST \
   -Drds.port=$RDS_PORT \
   -Drds.db=$RDS_DATABASE \
   clean package</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -611,10 +639,7 @@ http POST $APP_URL/api/fruit name=apple season=fall
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">...
-rosa-fruits-app-quarkus-547d97fd7-mp274 #devkameshs-rosa-fruits-app-quarkus java.util.NoSuchElementException: No value present<i class="conum" data-value="1"></i><b>(1)</b>
-rosa-fruits-app-quarkus-547d97fd7-mp274 devkameshs-rosa-fruits-app-quarkus      at java.base/java.util.Optional.orElseThrow(Optional.java:382)
-rosa-fruits-app-quarkus-547d97fd7-mp274 devkameshs-rosa-fruits-app-quarkus      at dev.kameshs.rosa.RdsIamAuthenticationProvider.getCredentials(RdsIamAuthenticationProvider.java:72)
-rosa-fruits-app-quarkus-547d97fd7-mp274 devkameshs-rosa-fruits-app-quarkus      at dev.kameshs.rosa.RdsIamAuthenticationProvider_ClientProxy.getCredentials(RdsIamAuthenticationProvider_ClientProxy.zig:128)
+com.amazonaws.services.securitytoken.model.AWSSecurityTokenServiceException: <mark>Not authorized to perform sts:AssumeRoleWithWebIdentity (Service: AWSSecurityTokenService; Status Code: 403; Error Code: AccessDenied; Request ID: 8b16ef26-5bf7-4c45-9ec5-75e92470e486; Proxy: null)</mark>
 ...</code></pre>
 </div>
 </div>
@@ -624,8 +649,8 @@ rosa-fruits-app-quarkus-547d97fd7-mp274 devkameshs-rosa-fruits-app-quarkus      
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="aws-iam.html#prep-aws-iam">AWS IAM</a></span>
-  <span class="next"><a href="dynamodb.html#prep-aws-iam">AWS DynamoDB</a></span>
+  <span class="prev"><a href="dynamodb.html">AWS DynamoDB</a></span>
+  <span class="next"><a href="cleanup.html">Clean Up</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

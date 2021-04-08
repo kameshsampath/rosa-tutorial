@@ -59,7 +59,22 @@
     <a class="nav-link" href="#prerequisite">Prerequisites</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#setup-rosa">Setup ROSA Cluster</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#setup-rosa">Setup ROSA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-cluster">Create Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-create-admin">Create Cluster Admin</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#setup-access-console">Access Web Console</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#configure-k8s">Set KUBECONFIG</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -71,9 +86,6 @@
     <a class="nav-link" href="aws-iam.html#setup-iam">Setup</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="aws-iam.html#configure-k8s">Set KUBECONFIG</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="aws-iam.html#setup-configurations">Setup Configurations</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -83,7 +95,31 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="rds.html#prep-aws-iam">AWS RDS</a>
+    <a class="nav-link" href="dynamodb.html">AWS DynamoDB</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#dd-build-prereq">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#setup-dd">Setup DynamoDB</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#setup-build-service-ui">Build UI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#dd-build-service">Build and Deploy Service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#aws-dd-check-apps">Access the Application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#aws-rds-verify-apps">Verify Access</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rds.html">AWS RDS</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="rds.html#aws-rds-pre-req">Prerequisites</a>
@@ -95,55 +131,13 @@
     <a class="nav-link" href="rds.html#setup-build-service-ui">Build UI</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="rds.html#rds-build-service">Build and Deploy</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="rds.html#rds-build-quarkus-service">Quarkus</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="rds.html#rds-build-sb-service">Spring Boot</a>
-  </li>
-</ul>
+    <a class="nav-link" href="rds.html#rds-build-service">Build and Deploy Service</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="rds.html#deploy">Access the Application</a>
+    <a class="nav-link" href="rds.html#aws-rds-check-apps">Access the Application</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="rds.html#deploy-in-another-ns">Deploy in another Namespace</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="dynamodb.html#prep-aws-iam">AWS DynamoDB</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#aws-dd-pre-req">Prerequisites</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#setup-dd">Setup DynamoDB</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#setup-build-service-ui">Build UI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="dynamodb.html#dd-build-service">Build and Deploy</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="dynamodb.html#dd-build-quarkus-service">Quarkus</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="dynamodb.html#dd-build-sb-service">Spring Boot</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#deploy">Access the Application</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#deploy-in-another-ns">Deploy in another Namespace</a>
+    <a class="nav-link" href="rds.html#aws-rds-verify-access">Verify Access</a>
   </li>
 </ul>
   </li>
@@ -200,7 +194,7 @@
 <p>OpenShift <code>4.7.2</code></p>
 </li>
 <li>
-<p>ROSA CLI <code>1.0.2</code></p>
+<p>ROSA CLI <code>1.0.4</code></p>
 </li>
 <li>
 <p>AWS CLI v2 <code>1.5.2</code></p>
@@ -255,6 +249,12 @@ Please have them installed and configured before you get started with any of the
 <td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable-4.7/openshift-client-windows.zip">Download</a></p></td>
 </tr>
 <tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><code>rosa-cli 1.0.4</code></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://github.com/openshift/rosa/releases/download/1.0.4/rosa-darwin-amd64">Download</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://github.com/openshift/rosa/releases/download/1.0.4/rosa-linux-amd64">Download</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://github.com/openshift/rosa/releases/download/1.0.4/rosa-windows-amd64.exe">Download</a></p></td>
+</tr>
+<tr>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://github.com/wercker/stern">stern</a></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><code>brew install stern</code></p></td>
 <td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://github.com/wercker/stern/releases/download/1.6.0/stern_linux_amd64">Download</a></p></td>
@@ -283,8 +283,13 @@ Please have them installed and configured before you get started with any of the
 </div>
 </div>
 <div class="sect1">
-<h2 id="setup-rosa"><a class="anchor" href="#setup-rosa"></a>Setup ROSA</h2>
+<h2 id="setup-rosa"><a class="anchor" href="#setup-rosa"></a>ROSA Setup</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>We will setup ROSA cluster using ROSA CLI that you downloaded, if you have not done it yet please check <a href="#prerequisite">Downloads</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="setup-cluster"><a class="anchor" href="#setup-cluster"></a>Create Cluster</h3>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rosa create cluster --cluster-name="my-rosa-cluster"</code></pre>
@@ -294,7 +299,119 @@ Please have them installed and configured before you get started with any of the
 <p>The command above will create the ROSA cluster in your default AWS region, type <code>rosa --help</code> for more information.</p>
 </div>
 <div class="paragraph">
-<p>More inforamation and options for ROSA setup can be found in the <a href="https://docs.openshift.com/rosa/welcome/index.html">official documentation</a>.</p>
+<p>More information and options for ROSA setup can be found in the <a href="https://docs.openshift.com/rosa/welcome/index.html">official documentation</a>.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="ulist">
+<ul>
+<li>
+<p>It will take around 40 minutes for the cluster to be up and running. Please make sure the cluster is ready before you proceed further with the tutorial.</p>
+</li>
+</ul>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setup-create-admin"><a class="anchor" href="#setup-create-admin"></a>Create Admin User</h3>
+<div class="paragraph">
+<p>You need to have <code>cluster-admin</code> to perform the exercises of this tutorial, to create the admin run:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rosa create admin --cluster=my-rosa-cluster</code></pre>
+</div>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">W: It is recommended to add an identity provider to login to this cluster. See 'rosa create
+idp --help' for more information.
+I: Admin account has been added to cluster 'my-rosa-cluster.
+I: Please securely store this generated password. If you lose this password you can delete a
+nd recreate the cluster admin user.
+I: To login, run the following command:
+
+   oc login <a href="https://api.my-rosa-cluster.vlsn.p1.openshiftapps.com:6443" class="bare">https://api.my-rosa-cluster.vlsn.p1.openshiftapps.com:6443</a> --username cluster-admi
+n --password #&lt;generated password&gt;#
+
+I: It may take up to a minute for the account to become active.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For convenience set the OpenShift Admin username and password as environment variables</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export OPENSHIFT_ADMIN='cluster-admin'
+export OPENSHIFT_ADMIN_PASSWORD='&lt;password from previous step&gt;'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setup-access-console"><a class="anchor" href="#setup-access-console"></a>Use Web Console to Login</h3>
+<div class="paragraph">
+<p>You can find the OpenShift Web Console URL using:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">rosa describe --cluster=my-rosa-cluster</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When you open the url in the web browser, click on "Cluster-Admin" realm and login using the user id $OPENSHIFT_ADMIN  and password OPENSHIFT_ADMIN_PASSWORD</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="configure-k8s"><a class="anchor" href="#configure-k8s"></a>Configure <code>KUBECONFIG</code></h3>
+<div class="paragraph">
+<p>Setup <code>KUBECONFIG</code> variable, this variable will be used in by the setup scripts to connect to OpenShift cluster during setup.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p "$TUTORIAL_HOME/.kube/config"
+export KUBECONFIG="$TUTORIAL_HOME/.kube/config"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As the setup requires OpenShift user with <strong>ClusterAdmin</strong> privileges, try login with <strong>ClusterAdmin</strong> user :</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Line 8 of `rosa describe cluster --cluster=my-rosa-cluster` has the API URL
+export OPENSHIFT_API_URL=$(rosa describe cluster --cluster=my-rosa-cluster | awk 'NR==8{print $3}')
+oc login --server=$OPENSHIFT_ADMIN \
+  --user $OPENSHIFT_ADMIN_PASSWORD \
+  --password $OPENSHIFT_ADMIN_PASSWORD</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>You can also view details of the cluster using the details page URL</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Look for Details Page
+rosa describe cluster --cluster=my-rosa-cluster</code></pre>
+</div>
+</div>
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 </div>

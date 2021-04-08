@@ -58,7 +58,22 @@
     <a class="nav-link" href="setup.html#prerequisite">Prerequisites</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="setup.html#setup-rosa">Setup ROSA Cluster</a>
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="setup.html#setup-rosa">Setup ROSA</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="setup.html#setup-cluster">Create Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="setup.html#setup-create-admin">Create Cluster Admin</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="setup.html#setup-access-console">Access Web Console</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="setup.html#configure-k8s">Set KUBECONFIG</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -70,9 +85,6 @@
     <a class="nav-link" href="aws-iam.html#setup-iam">Setup</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="aws-iam.html#configure-k8s">Set KUBECONFIG</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="aws-iam.html#setup-configurations">Setup Configurations</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -82,7 +94,31 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="rds.html#prep-aws-iam">AWS RDS</a>
+    <a class="nav-link" href="dynamodb.html">AWS DynamoDB</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#dd-build-prereq">Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#setup-dd">Setup DynamoDB</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#setup-build-service-ui">Build UI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#dd-build-service">Build and Deploy Service</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#aws-dd-check-apps">Access the Application</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="dynamodb.html#aws-rds-verify-apps">Verify Access</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rds.html">AWS RDS</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="rds.html#aws-rds-pre-req">Prerequisites</a>
@@ -94,55 +130,13 @@
     <a class="nav-link" href="rds.html#setup-build-service-ui">Build UI</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="rds.html#rds-build-service">Build and Deploy</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="rds.html#rds-build-quarkus-service">Quarkus</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="rds.html#rds-build-sb-service">Spring Boot</a>
-  </li>
-</ul>
+    <a class="nav-link" href="rds.html#rds-build-service">Build and Deploy Service</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="rds.html#deploy">Access the Application</a>
+    <a class="nav-link" href="rds.html#aws-rds-check-apps">Access the Application</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="rds.html#deploy-in-another-ns">Deploy in another Namespace</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="dynamodb.html#prep-aws-iam">AWS DynamoDB</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#aws-dd-pre-req">Prerequisites</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#setup-dd">Setup DynamoDB</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#setup-build-service-ui">Build UI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="dynamodb.html#dd-build-service">Build and Deploy</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="dynamodb.html#dd-build-quarkus-service">Quarkus</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="dynamodb.html#dd-build-sb-service">Spring Boot</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#deploy">Access the Application</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="dynamodb.html#deploy-in-another-ns">Deploy in another Namespace</a>
+    <a class="nav-link" href="rds.html#aws-rds-verify-access">Verify Access</a>
   </li>
 </ul>
   </li>
