@@ -2,6 +2,7 @@ package dev.kameshs.rosa;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.beans.factory.annotation.Value;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
@@ -12,14 +13,15 @@ public abstract class AbstractService {
 
   public final static String FRUIT_NAME_COL = "fruitName";
   public final static String FRUIT_SEASON = "fruitSeason";
+  public final static String CREATE_TIME = "create_time";
 
-  public String getTableName() {
-    return "QuarkusFruits";
-  }
+
+  @Value("${rosa.demos.dynamodb.table}")
+  String tableName;
 
   protected ScanRequest scanRequest() throws Exception {
     return ScanRequest.builder()
-                      .tableName(getTableName())
+                      .tableName(tableName)
                       .attributesToGet(FRUIT_NAME_COL, FRUIT_SEASON)
                       .build();
   }
@@ -27,14 +29,17 @@ public abstract class AbstractService {
   protected PutItemRequest putRequest(Fruit fruit) throws Exception {
     Map<String, AttributeValue> item = new HashMap<>();
     item.put(FRUIT_NAME_COL, AttributeValue.builder()
-        .s(fruit.name)
+                                           .s(fruit.name)
                                            .build());
     item.put(FRUIT_SEASON, AttributeValue.builder()
-        .s(fruit.season)
+                                         .s(fruit.season)
+                                         .build());
+    item.put(CREATE_TIME, AttributeValue.builder()
+                                         .n(String.valueOf(fruit.createTime))
                                          .build());
 
     return PutItemRequest.builder()
-                         .tableName(getTableName())
+                         .tableName(tableName)
                          .item(item)
                          .build();
   }
@@ -46,7 +51,7 @@ public abstract class AbstractService {
                                           .build());
 
     return GetItemRequest.builder()
-                         .tableName(getTableName())
+                         .tableName(tableName)
                          .key(key)
                          .attributesToGet(FRUIT_NAME_COL, FRUIT_SEASON)
                          .build();
@@ -59,7 +64,7 @@ public abstract class AbstractService {
                                           .build());
 
     return DeleteItemRequest.builder()
-                            .tableName(getTableName())
+                            .tableName(tableName)
                             .key(key)
                             .build();
   }

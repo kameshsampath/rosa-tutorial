@@ -6,10 +6,10 @@ public class Fruit {
 
   public String name;
   public String season;
-  public long  createtime;
+  public long createTime;
 
   public Fruit() {
-    this.createtime = System.currentTimeMillis();
+    this.createTime = System.currentTimeMillis();
   }
 
   @Override

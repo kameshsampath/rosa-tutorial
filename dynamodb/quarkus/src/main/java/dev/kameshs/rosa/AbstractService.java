@@ -34,7 +34,7 @@ public abstract class AbstractService {
                                          .s(fruit.season)
                                          .build());
     item.put(CREATE_TIME, AttributeValue.builder()
-                                        .n(String.valueOf(fruit.createtime))
+                                        .n(String.valueOf(fruit.createTime))
                                         .build());
 
     return PutItemRequest.builder()
