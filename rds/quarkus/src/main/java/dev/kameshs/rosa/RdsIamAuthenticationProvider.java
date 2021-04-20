@@ -81,7 +81,7 @@ public class RdsIamAuthenticationProvider implements CredentialsProvider {
                               .build());
 
 
-      LOGGER.log(Level.INFO, "Got token {0} for User ", authToken);
+      LOGGER.log(Level.FINEST, "Got token {0} for User ", authToken);
 
       properties.put(USER_PROPERTY_NAME, dbUser);
       properties.put(PASSWORD_PROPERTY_NAME, authToken);

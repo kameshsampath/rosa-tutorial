@@ -3,11 +3,11 @@
   connection: local
 
   vars_prompt:
-    - name: aws_access_key
+    - name: aws_access_key_id
       prompt: Enter AWS Access Key
 
-    - name: aws_secret_key
+    - name: aws_secret_access_key
       prompt: Enter AWS Secret Key
 
   roles:
-    - kameshsampath.rosa_demos
+    - kameshsampath.demos.rosa_demos

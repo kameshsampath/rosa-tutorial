@@ -1,0 +1,18 @@
+= ROSA Tutorial - How to integrate with AWS Services
+
+image:https://img.shields.io/badge/OpenShift-v4.7.x-blue[OpenShift,link=https://www.openshift.com]
+image:https://img.shields.io/badge/ROSA-blue[ROSA,link=https://aws.amazon.com/rosa/]
+
+== Documentation
+
+Start your ROSA journey today with https://kameshsampath.github.io/rosa-tutorial
+
+== Overview
+
+A collection of Java https://quarkus.io[Quarkus] and https://springboot.io[Spring Boot] applications is intended to demonstrate how to integrate the AWS Native Services from an OpenShift cluster deployed via https://aws.amazon.com/rosa/[ROSA].
+
+Available integration Demos
+
+[x] [AWS DynamoDB](https://aws.amazon.com/dynamodb/)
+
+[x] [AWS RDS]( https://aws.amazon.com/rds/)

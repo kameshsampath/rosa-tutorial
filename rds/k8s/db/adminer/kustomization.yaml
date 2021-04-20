@@ -7,6 +7,6 @@ resources:
   - route.yaml
   - pgsql-client.yaml
 secretGenerator:
-  - name: aws_rds_credentials
+  - name: aws-rds-credentials
     files:
       - aws_rds.env

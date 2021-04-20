@@ -51,3 +51,4 @@ yarn.lock
 **/aws_rds.env
 gh-pages
 .cache
+**/extravars

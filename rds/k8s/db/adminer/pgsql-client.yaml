@@ -18,12 +18,11 @@ spec:
           imagePullPolicy: IfNotPresent
           envFrom:
             - secretRef:
-                name: aws_rds_credentials
+                name: aws-rds-credentials
           command:
             - tail
             - -f
             - /dev/null
-      restartPolicy: Never
   selector:
     matchLabels:
       app: pgsql-client
